@@ -293,7 +293,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   bool get isViewingOwnProfile => _loggedInUserProfile.uri == twter.uri;
   bool get isFollowing =>
-      _loggedInUserProfile.isFollowing(twter.uri.toString());
+      _loggedInUserProfile.isFollowing(profile.uri.toString());
   bool get isProfileExternal => !_twter.isPodMember(_loggedInUserProfile.uri);
 
   FetchState get fetchMoreState => _fetchMoreState;
@@ -309,7 +309,7 @@ class ProfileViewModel extends ChangeNotifier {
     _lastTimelineResponse = await _api.getUserTwts(
       0,
       _twter.nick,
-      _twter.slug,
+      _twter.uri.toString(),
     );
     _twts = _lastTimelineResponse.twts;
     notifyListeners();
@@ -326,7 +326,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<void> fetchProfile() async {
     if (isProfileExternal) {
-      profileResponse = await _api.getExternalProfile(_twter.nick, _twter.slug);
+      profileResponse =
+          await _api.getExternalProfile(_twter.nick, _twter.uri.toString());
       return;
     }
     profileResponse = await _api.getProfile(_twter.nick);
