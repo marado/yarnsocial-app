@@ -263,7 +263,6 @@ class _PostListState extends State<PostList> {
   }
 
   Widget buildMarkdownBody(BuildContext context, Twt twt) {
-    final user = context.read<User>();
     final appStrings = context.read<AppStrings>();
 
     return MarkdownBody(
@@ -336,7 +335,7 @@ class _PostListState extends State<PostList> {
           ),
         );
       },
-      data: twt.text,
+      data: twt.markdownText,
       extensionSet: md.ExtensionSet.gitHubWeb,
     );
   }
