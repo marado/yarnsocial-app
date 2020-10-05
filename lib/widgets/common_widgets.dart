@@ -269,14 +269,13 @@ class _PostListState extends State<PostList> {
     return MarkdownBody(
       imageBuilder: (uri, title, alt) => Builder(
         builder: (context) {
-          Uri newUri = uri;
+          Uri thumbnailURI = uri;
           bool isVideoThumbnail = false;
 
           if (path.extension(uri.path) == '.webm') {
             isVideoThumbnail = true;
-            newUri = uri.replace(
-              path:
-                  '${path.withoutExtension(uri.path)}.${Platform.isIOS ? 'mp4' : 'webp'}',
+            thumbnailURI = uri.replace(
+              path: '${path.withoutExtension(uri.path)}',
             );
           }
 
@@ -287,7 +286,12 @@ class _PostListState extends State<PostList> {
                 MaterialPageRoute(
                   builder: (context) => VideoScreen(
                     title: title,
-                    videoURL: uri.toString(),
+                    videoURL: thumbnailURI
+                        .replace(
+                          path:
+                              "${thumbnailURI.path}.${Platform.isIOS ? 'mp4' : 'webm'}",
+                        )
+                        .toString(),
                   ),
                 ),
               );
@@ -310,7 +314,7 @@ class _PostListState extends State<PostList> {
             onTap: onTap,
             child: CachedNetworkImage(
               httpHeaders: {HttpHeaders.acceptHeader: "image/webp"},
-              imageUrl: newUri.toString(),
+              imageUrl: thumbnailURI.toString(),
               placeholder: (context, url) => CircularProgressIndicator(),
               imageBuilder: (context, imageProvider) {
                 return Stack(
