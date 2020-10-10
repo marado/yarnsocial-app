@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:share/share.dart';
 import 'package:goryon/strings.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:markdown/markdown.dart' as md;
@@ -193,6 +194,50 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
+class PostActions extends StatelessWidget {
+  final Twt twt;
+
+  const PostActions({Key key, @required this.twt}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.share),
+              title: const Text('Share'),
+              onTap: () {
+                Navigator.pop(context);
+                Share.share(context
+                    .read<User>()
+                    .profile
+                    .uri
+                    .replace(
+                      path: "/twt/${twt.hash}",
+                    )
+                    .toString());
+              },
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Center(
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class PostList extends StatefulWidget {
   const PostList({
     Key key,
@@ -373,49 +418,86 @@ class _PostListState extends State<PostList> {
               final twt = widget.twts[idx];
 
               return ListTile(
+                contentPadding: EdgeInsets.fromLTRB(16, 16, 8, 6),
                 isThreeLine: true,
-                title: GestureDetector(
-                  onTap: () {
-                    pushToProfileScreen(context, twt.twter);
-                  },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Avatar(imageUrl: twt.twter.avatar.toString()),
-                      SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        pushToProfileScreen(context, twt.twter);
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            twt.twter.nick,
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          SizedBox(height: 4),
-                          Row(
+                          Avatar(imageUrl: twt.twter.avatar.toString()),
+                          SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                Jiffy(twt.createdTime.toLocal()).format('jm'),
-                                style: Theme.of(context).textTheme.bodyText2,
+                                twt.twter.nick,
+                                style: Theme.of(context).textTheme.headline6,
                               ),
-                              SizedBox(width: 8),
-                              Text(
-                                '(${Jiffy(twt.createdTime).fromNow()})',
-                                style: Theme.of(context).textTheme.bodyText2,
+                              SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Text(
+                                    Jiffy(twt.createdTime.toLocal())
+                                        .format('jm'),
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    '(${Jiffy(twt.createdTime).fromNow()})',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Material(
+                        child: InkWell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Icon(
+                              Icons.more_vert,
+                              size: 16,
+                            ),
+                          ),
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              builder: (context) => Container(
+                                height: 200,
+                                child: PostActions(twt: twt),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
                       child: buildMarkdownBody(context, twt),
                     ),
+                    Divider(height: 0),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         shape: StadiumBorder(),
@@ -440,7 +522,6 @@ class _PostListState extends State<PostList> {
                         style: Theme.of(context).textTheme.button,
                       ),
                     ),
-                    Divider(height: 0),
                   ],
                 ),
               );
@@ -539,4 +620,67 @@ class ErrorMessage extends StatelessWidget {
       ),
     );
   }
+}
+
+class DropdownFormField<T> extends FormField<T> {
+  DropdownFormField(
+    BuildContext context,
+    List<DropdownMenuItem<T>> dropDownItems, {
+    FormFieldSetter<T> onSaved,
+    FormFieldValidator<T> validator,
+    T initialValue,
+    bool autovalidate = false,
+    bool isExpanded = false,
+    Widget hint,
+  }) : super(
+          onSaved: onSaved,
+          validator: validator,
+          initialValue: initialValue,
+          autovalidate: autovalidate,
+          builder: (FormFieldState<T> state) {
+            final theme = Theme.of(context);
+            return Column(
+              children: [
+                DropdownButton<T>(
+                  onTap: () {
+                    // https://github.com/flutter/flutter/issues/47128#issuecomment-627551073
+                    FocusManager.instance.primaryFocus.unfocus();
+                  },
+                  value: state.value,
+                  isExpanded: isExpanded,
+                  items: dropDownItems,
+                  underline: Container(
+                    height: 1.0,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: state.hasError
+                              ? theme.errorColor
+                              : Color(0xFFBDBDBD),
+                          width: state.hasError ? 1.0 : 0.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  hint: hint,
+                  onChanged: (changedValue) {
+                    state.didChange(changedValue);
+                  },
+                ),
+                if (state.hasError) ...[
+                  SizedBox(height: 2),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      state.errorText,
+                      style: theme.textTheme.caption.copyWith(
+                        color: theme.errorColor,
+                      ),
+                    ),
+                  )
+                ]
+              ],
+            );
+          },
+        );
 }
