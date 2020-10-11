@@ -21,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future _followFuture;
   Future _unFollowFuture;
   Future _muteFuture;
+  bool _infoExpanded = true;
 
   @override
   void initState() {
@@ -32,6 +33,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future _fetchProfile() async {
     await context.read<ProfileViewModel>().fetchProfile();
+  }
+
+  Future _refreshPost() async {
+    try {
+      await context.read<ProfileViewModel>().refreshPost();
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to refresh post'),
+        ),
+      );
+    }
   }
 
   Future _follow(String nick, String url, BuildContext context) async {
@@ -73,6 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future _mute(BuildContext context) async {
     try {
       await context.read<ProfileViewModel>().mute();
+      await context.read<ProfileViewModel>().refreshPost();
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Successfully muted user/feed'),
@@ -91,6 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future _unmute(BuildContext context) async {
     try {
       await context.read<ProfileViewModel>().unmute();
+      await context.read<ProfileViewModel>().refreshPost();
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Successfully unmuted user/feed'),
@@ -214,165 +229,181 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              Divider(),
+              SizedBox(height: 8),
             ],
           ),
         ),
       ),
-      SliverList(
-        delegate: SliverChildListDelegate.fixed(
-          [
-            ListTile(
-              dense: true,
-              title: Text('Twtxt'),
-              leading: Icon(Icons.link),
-              onTap: () async {
-                final link = profileViewModel.profile.uri.toString();
-                if (await canLaunch(link)) {
-                  await launch(link);
-                  return;
-                }
-              },
-            ),
-            if (!profileViewModel.isViewingOwnProfile) ...[
-              Consumer<User>(
-                builder: (context, user, _) {
-                  if (profileViewModel.isFollowing) {
-                    return FutureBuilder(
-                      future: _unFollowFuture,
-                      builder: (context, snapshot) {
-                        Widget leading = Icon(Icons.person_remove);
-                        Function onTap = () {
-                          setState(() {
-                            _unFollowFuture = _unFollow(
-                              profileViewModel.twter.nick,
-                              context,
-                            );
-                          });
-                        };
+      SliverToBoxAdapter(
+        child: ExpansionPanelList(
+          expansionCallback: (panelIndex, isExpanded) {
+            setState(() {
+              _infoExpanded = !isExpanded;
+            });
+          },
+          children: [
+            ExpansionPanel(
+              canTapOnHeader: true,
+              isExpanded: _infoExpanded,
+              body: Column(
+                children: [
+                  ListTile(
+                    dense: true,
+                    title: Text('Twtxt'),
+                    leading: Icon(Icons.link),
+                    onTap: () async {
+                      final link = profileViewModel.profile.uri.toString();
+                      if (await canLaunch(link)) {
+                        await launch(link);
+                        return;
+                      }
+                    },
+                  ),
+                  if (!profileViewModel.isViewingOwnProfile) ...[
+                    Consumer<User>(
+                      builder: (context, user, _) {
+                        if (profileViewModel.isFollowing) {
+                          return FutureBuilder(
+                            future: _unFollowFuture,
+                            builder: (context, snapshot) {
+                              Widget leading = Icon(Icons.person_remove);
+                              Function onTap = () {
+                                setState(() {
+                                  _unFollowFuture = _unFollow(
+                                    profileViewModel.twter.nick,
+                                    context,
+                                  );
+                                });
+                              };
 
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          leading = SizedSpinner();
-                          onTap = null;
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                leading = SizedSpinner();
+                                onTap = null;
+                              }
+
+                              return ListTile(
+                                dense: true,
+                                title: Text('Unfollow'),
+                                leading: leading,
+                                onTap: onTap,
+                              );
+                            },
+                          );
+                        }
+
+                        return FutureBuilder(
+                          future: _followFuture,
+                          builder: (context, snapshot) {
+                            Widget leading = Icon(Icons.person_add_alt);
+                            Function onTap = () {
+                              setState(() {
+                                _followFuture = _follow(
+                                  profileViewModel.profile.username,
+                                  profileViewModel.profile.uri.toString(),
+                                  context,
+                                );
+                              });
+                            };
+
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              leading = SizedSpinner();
+                              onTap = null;
+                            }
+
+                            return ListTile(
+                              dense: true,
+                              title: Text('Follow'),
+                              leading: leading,
+                              onTap: onTap,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    Builder(
+                      builder: (context) {
+                        return ListTile(
+                          dense: true,
+                          title: Text('Report'),
+                          leading: Icon(Icons.report),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (_) {
+                                  return Report(
+                                    nick: profileViewModel.profile.username,
+                                    url:
+                                        profileViewModel.profile.uri.toString(),
+                                    afterSubmit: () {
+                                      Scaffold.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Your report has successfully submitted',
+                                          ),
+                                        ),
+                                      );
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    FutureBuilder(
+                      future: _muteFuture,
+                      builder: (context, snapshot) {
+                        final isLoading =
+                            snapshot.connectionState == ConnectionState.waiting;
+                        if (profileViewModel.profile.muted) {
+                          return ListTile(
+                            dense: true,
+                            onTap: isLoading
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _muteFuture = _unmute(context);
+                                    });
+                                  },
+                            title: Text('Unmute'),
+                            leading: isLoading
+                                ? SizedSpinner()
+                                : Icon(Icons.volume_down),
+                          );
                         }
 
                         return ListTile(
+                          onTap: isLoading
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _muteFuture = _mute(context);
+                                  });
+                                },
                           dense: true,
-                          title: Text('Unfollow'),
-                          leading: leading,
-                          onTap: onTap,
+                          title: Text('Mute'),
+                          leading: isLoading
+                              ? SizedSpinner()
+                              : Icon(Icons.volume_mute),
                         );
                       },
-                    );
-                  }
-
-                  return FutureBuilder(
-                    future: _followFuture,
-                    builder: (context, snapshot) {
-                      Widget leading = Icon(Icons.person_add_alt);
-                      Function onTap = () {
-                        setState(() {
-                          _followFuture = _follow(
-                            profileViewModel.profile.username,
-                            profileViewModel.profile.uri.toString(),
-                            context,
-                          );
-                        });
-                      };
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        leading = SizedSpinner();
-                        onTap = null;
-                      }
-
-                      return ListTile(
-                        dense: true,
-                        title: Text('Follow'),
-                        leading: leading,
-                        onTap: onTap,
-                      );
-                    },
-                  );
-                },
+                    ),
+                  ],
+                ],
               ),
-              Builder(
-                builder: (context) {
-                  return ListTile(
-                    dense: true,
-                    title: Text('Report'),
-                    leading: Icon(Icons.report),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          fullscreenDialog: true,
-                          builder: (_) {
-                            return Report(
-                              nick: profileViewModel.profile.username,
-                              url: profileViewModel.profile.uri.toString(),
-                              afterSubmit: () {
-                                Scaffold.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Your report has successfully submitted',
-                                    ),
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-              FutureBuilder(
-                future: _muteFuture,
-                builder: (context, snapshot) {
-                  final isLoading =
-                      snapshot.connectionState == ConnectionState.waiting;
-                  if (profileViewModel.profile.muted) {
-                    return ListTile(
-                      dense: true,
-                      onTap: isLoading
-                          ? null
-                          : () {
-                              setState(() {
-                                _muteFuture = _unmute(context);
-                              });
-                            },
-                      title: Text('Unmute'),
-                      leading:
-                          isLoading ? SizedSpinner() : Icon(Icons.volume_down),
-                    );
-                  }
-
-                  return ListTile(
-                    onTap: isLoading
-                        ? null
-                        : () {
-                            setState(() {
-                              _muteFuture = _mute(context);
-                            });
-                          },
-                    dense: true,
-                    title: Text('Mute'),
-                    leading:
-                        isLoading ? SizedSpinner() : Icon(Icons.volume_mute),
-                  );
-                },
-              ),
-            ],
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Divider(),
-            ),
+              headerBuilder: (BuildContext context, bool isExpanded) {
+                return Container();
+              },
+            )
           ],
         ),
-      )
+      ),
     ];
   }
 
@@ -442,12 +473,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
           ),
-          body: PostList(
-            gotoNextPage: vm.gotoNextPage,
-            fetchNewPost: vm.refreshPost,
-            twts: vm.twts,
-            fetchMoreState: vm.fetchMoreState,
-            topSlivers: buildSlivers(),
+          body: RefreshIndicator(
+            onRefresh: _refreshPost,
+            child: PostList(
+              gotoNextPage: vm.gotoNextPage,
+              fetchNewPost: vm.refreshPost,
+              twts: vm.twts,
+              fetchMoreState: vm.fetchMoreState,
+              topSlivers: buildSlivers(),
+            ),
           ),
         );
       },
