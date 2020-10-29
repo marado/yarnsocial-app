@@ -27,6 +27,15 @@ jobs:
           IOS_PROVISIONING_PROFILE_DATA: ${{ secrets.IOS_PROVISIONING_PROFILE_DATA }}
         run: |
           exec .github/scripts/import-profile.sh
+      - name: Install Dependencies
+        run: |
+          cd ios
+          pod install --repo-update
+        shell: bash
+      - uses: ty0x2333/cocoapods-action@master
+        with:
+          additional_build_params: -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.0'
+          additional_lint_params: --private
       - name: Build app
         run: |
           cd ios
