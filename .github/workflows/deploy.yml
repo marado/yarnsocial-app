@@ -30,6 +30,8 @@ jobs:
       - name: Build app
         run: |
           fastlane run build_app
+        with:
+          path: ./ios
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
