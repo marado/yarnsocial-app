@@ -9,13 +9,14 @@ import '../viewmodels.dart';
 import 'discover.dart';
 import 'follow.dart';
 import 'login.dart';
+import 'settings.dart';
 import 'timeline.dart';
 import 'mentions.dart';
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({Key key, this.snapshot}) : super(key: key);
 
-  final AsyncSnapshot<User> snapshot;
+  final AsyncSnapshot<AppUser> snapshot;
 
   @override
   _AuthWidgetState createState() => _AuthWidgetState();
@@ -95,6 +96,9 @@ class _HomeState extends State<Home> {
                 break;
               case Follow.routePath:
                 builder = (_) => Follow();
+                break;
+              case Settings.routePath:
+                builder = (_) => Settings();
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');

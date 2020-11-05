@@ -3,24 +3,25 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:goryon/screens/conversation.dart';
-import 'package:share/share.dart';
-import 'package:goryon/strings.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:goryon/screens/conversation.dart';
 import 'package:goryon/screens/profile.dart';
+import 'package:goryon/strings.dart';
 
 import '../api.dart';
 import '../models.dart';
 import '../screens/discover.dart';
 import '../screens/follow.dart';
-import '../screens/newtwt.dart';
-import '../screens/timeline.dart';
 import '../screens/mentions.dart';
+import '../screens/newtwt.dart';
+import '../screens/settings.dart';
+import '../screens/timeline.dart';
 import '../screens/videoscreen.dart';
 import '../viewmodels.dart';
 
@@ -38,6 +39,14 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (imageUrl == null) {
       return CircleAvatar(radius: radius);
+    }
+
+    // Treat image as FileImage if imageURL does not contain a scheme
+    if (!Uri.parse(imageUrl).hasScheme) {
+      return CircleAvatar(
+        backgroundImage: FileImage(File(imageUrl)),
+        radius: radius,
+      );
     }
 
     return CachedNetworkImage(
@@ -102,18 +111,18 @@ class AvatarWithBorder extends StatelessWidget {
 class AuthWidgetBuilder extends StatelessWidget {
   const AuthWidgetBuilder({Key key, @required this.builder}) : super(key: key);
 
-  final Widget Function(BuildContext, AsyncSnapshot<User>) builder;
+  final Widget Function(BuildContext, AsyncSnapshot<AppUser>) builder;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User>(
+    return StreamBuilder<AppUser>(
       stream: context.watch<AuthViewModel>().user,
-      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-        final User user = snapshot.data;
+      builder: (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
+        final AppUser user = snapshot.data;
         if (user != null) {
           return MultiProvider(
             providers: [
-              Provider<User>.value(value: user),
+              Provider<AppUser>.value(value: user),
             ],
             child: builder(context, snapshot),
           );
@@ -153,7 +162,7 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          Consumer<User>(builder: (context, user, _) {
+          Consumer<AppUser>(builder: (context, user, _) {
             return UserAccountsDrawerHeader(
               margin: const EdgeInsets.all(0),
               // Avatar border
@@ -175,6 +184,7 @@ class AppDrawer extends StatelessWidget {
           buildListTile(context, 'Timeline', Timeline.routePath),
           buildListTile(context, 'Follow', Follow.routePath),
           buildListTile(context, 'Mentions', Mentions.routePath),
+          buildListTile(context, 'Settings', Settings.routePath),
           SwitchListTile(
             title: Text("Dark mode"),
             value: themeVM.isDarkModeEnabled &&
@@ -223,7 +233,7 @@ class PostActions extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   Share.share(context
-                      .read<User>()
+                      .read<AppUser>()
                       .profile
                       .uri
                       .replace(
@@ -298,7 +308,7 @@ class _PostListState extends State<PostList> {
     BuildContext context,
     Twter twter,
   ) {
-    final user = context.read<User>();
+    final user = context.read<AppUser>();
     final api = context.read<Api>();
     Navigator.push(
       context,
@@ -431,7 +441,7 @@ class _PostListState extends State<PostList> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<User>();
+    final user = context.watch<AppUser>();
 
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -615,7 +625,7 @@ class UnexpectedErrorMessage extends StatelessWidget {
   final String buttonLabel;
   const UnexpectedErrorMessage({
     Key key,
-    this.onRetryPressed,
+    @required this.onRetryPressed,
     this.buttonLabel,
     this.description,
   }) : super(key: key);

@@ -11,10 +11,10 @@ import 'models.dart';
 class AuthViewModel {
   final Api _api;
 
-  final _user = BehaviorSubject<User>();
+  final _user = BehaviorSubject<AppUser>();
 
   AuthViewModel(this._api) {
-    _api.loginUsingCachedData().then(_user.add).catchError((_) {
+    getAppUser().catchError((_) {
       _api.clearUserToken();
       _user.add(null);
     });
@@ -55,6 +55,10 @@ class AuthViewModel {
       uri,
     );
     _user.add(user);
+  }
+
+  Future<void> getAppUser() {
+    return _api.getAppUser().then(_user.add);
   }
 }
 
