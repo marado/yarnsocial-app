@@ -185,12 +185,6 @@ class AppDrawer extends StatelessWidget {
           buildListTile(context, 'Follow', Follow.routePath),
           buildListTile(context, 'Mentions', Mentions.routePath),
           buildListTile(context, 'Settings', Settings.routePath),
-          SwitchListTile(
-            title: Text("Dark mode"),
-            value: themeVM.isDarkModeEnabled &&
-                Theme.of(context).brightness == Brightness.dark,
-            onChanged: themeVM.toggleDarkMode,
-          ),
           ListTile(
             title: Text('Log Out'),
             trailing: Icon(Icons.logout),
