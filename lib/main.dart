@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
   final PackageInfo packageInfo;
 
   const MyApp({
-    Key key,
-    @required this.sharedPreferences,
-    @required this.packageInfo,
+    Key? key,
+    required this.sharedPreferences,
+    required this.packageInfo,
   }) : super(key: key);
 
   @override

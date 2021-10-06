@@ -18,7 +18,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  Future<User> _fetchUserFuture;
+  Future<User>? _fetchUserFuture;
   @override
   void initState() {
     super.initState();
@@ -54,11 +54,11 @@ class _SettingsState extends State<Settings> {
           }
 
           if (snapshot.hasData) {
-            final user = snapshot.data;
+            final user = snapshot.data!;
             return SettingsBody(
               tagline: user.tagline,
               email: user.email,
-              imageURL: context.watch<AppUser>().twter.avatar.toString(),
+              imageURL: context.watch<AppUser>().twter!.avatar.toString(),
               isFollowersPubliclyVisible: user.isFollowersPubliclyVisible,
               isFollowingPubliclyVisible: user.isFollowingPubliclyVisible,
             );
@@ -72,16 +72,16 @@ class _SettingsState extends State<Settings> {
 }
 
 class SettingsBody extends StatefulWidget {
-  final String tagline, email, imageURL;
-  final bool isFollowersPubliclyVisible, isFollowingPubliclyVisible;
+  final String? tagline, email, imageURL;
+  final bool? isFollowersPubliclyVisible, isFollowingPubliclyVisible;
 
   const SettingsBody({
-    Key key,
-    @required this.tagline,
-    @required this.email,
-    @required this.imageURL,
-    @required this.isFollowersPubliclyVisible,
-    @required this.isFollowingPubliclyVisible,
+    Key? key,
+    required this.tagline,
+    required this.email,
+    required this.imageURL,
+    required this.isFollowersPubliclyVisible,
+    required this.isFollowingPubliclyVisible,
   }) : super(key: key);
   @override
   _SettingsBodyState createState() => _SettingsBodyState();
@@ -98,17 +98,17 @@ class _SettingsBodyState extends State<SettingsBody> {
     DropdownMenuItem(child: Text('Light'), value: ThemeMode.light),
   ];
 
-  Future _saveSettingsFuture;
-  String _avatarURL;
+  Future? _saveSettingsFuture;
+  String? _avatarURL;
 
-  bool _isFollowersPubliclyVisible;
-  bool _isFollowingPubliclyVisible;
+  bool? _isFollowersPubliclyVisible;
+  bool? _isFollowingPubliclyVisible;
 
   @override
   void initState() {
     super.initState();
-    _emailController.text = widget.email;
-    _taglineController.text = widget.tagline;
+    _emailController.text = widget.email!;
+    _taglineController.text = widget.tagline!;
     _avatarURL = widget.imageURL;
     _isFollowersPubliclyVisible = widget.isFollowersPubliclyVisible;
     _isFollowingPubliclyVisible = widget.isFollowingPubliclyVisible;
@@ -121,13 +121,13 @@ class _SettingsBodyState extends State<SettingsBody> {
           _taglineController.text,
           _passwordController.text,
           _emailController.text,
-          _isFollowersPubliclyVisible,
-          _isFollowingPubliclyVisible);
+          _isFollowersPubliclyVisible!,
+          _isFollowingPubliclyVisible!);
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Successfully saved user settings'),
       ));
       await context.read<AuthViewModel>().getAppUser();
-      CachedNetworkImage.evictFromCache(widget.imageURL);
+      CachedNetworkImage.evictFromCache(widget.imageURL!);
     } catch (e) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Failed to save user settings'),
@@ -145,7 +145,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         GestureDetector(
           onTap: () {
             getImage(context, _picker).then((value) {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+              WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
               if (value == null) return;
               setState(() {
                 _avatarURL = value.path;
@@ -205,7 +205,7 @@ class _SettingsBodyState extends State<SettingsBody> {
           isExpanded: true,
           items: _themeModes,
           onChanged: (themeMode) {
-            themeVM.themeMode = themeMode;
+            themeVM.themeMode = themeMode!;
           },
           decoration: InputDecoration(
             labelText: 'Theme',
@@ -216,7 +216,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         Text('Privacy Settings', style: Theme.of(context).textTheme.subtitle1),
         SwitchListTile(
           title: Text('Show my followers publicly'),
-          value: _isFollowersPubliclyVisible,
+          value: _isFollowersPubliclyVisible!,
           onChanged: (value) {
             setState(() {
               _isFollowersPubliclyVisible = value;
@@ -225,7 +225,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         ),
         SwitchListTile(
           title: Text('Show my followings publicly'),
-          value: _isFollowingPubliclyVisible,
+          value: _isFollowingPubliclyVisible!,
           onChanged: (value) {
             setState(() {
               _isFollowingPubliclyVisible = value;

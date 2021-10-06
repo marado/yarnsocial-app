@@ -27,12 +27,12 @@ import '../viewmodels.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({
-    Key key,
-    @required this.imageUrl,
+    Key? key,
+    required this.imageUrl,
     this.radius = 20,
   }) : super(key: key);
 
-  final String imageUrl;
+  final String? imageUrl;
   final double radius;
 
   @override
@@ -42,15 +42,15 @@ class Avatar extends StatelessWidget {
     }
 
     // Treat image as FileImage if imageURL does not contain a scheme
-    if (!Uri.parse(imageUrl).hasScheme) {
+    if (!Uri.parse(imageUrl!).hasScheme) {
       return CircleAvatar(
-        backgroundImage: FileImage(File(imageUrl)),
+        backgroundImage: FileImage(File(imageUrl!)),
         radius: radius,
       );
     }
 
     return CachedNetworkImage(
-      imageUrl: imageUrl,
+      imageUrl: imageUrl!,
       httpHeaders: {HttpHeaders.acceptHeader: "image/webp"},
       imageBuilder: (context, imageProvider) {
         return CircleAvatar(backgroundImage: imageProvider, radius: radius);
@@ -65,7 +65,7 @@ class SizedSpinner extends StatelessWidget {
   final double height;
   final double width;
 
-  const SizedSpinner({Key key, this.height = 16, this.width = 16})
+  const SizedSpinner({Key? key, this.height = 16, this.width = 16})
       : super(key: key);
 
   @override
@@ -81,14 +81,14 @@ class SizedSpinner extends StatelessWidget {
 }
 
 class AvatarWithBorder extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
   final double radius;
-  final Color borderColor;
+  final Color? borderColor;
   final double borderThickness;
 
   const AvatarWithBorder({
-    Key key,
-    @required this.imageUrl,
+    Key? key,
+    required this.imageUrl,
     this.borderColor,
     this.borderThickness = 1,
     this.radius = 20,
@@ -109,16 +109,16 @@ class AvatarWithBorder extends StatelessWidget {
 }
 
 class AuthWidgetBuilder extends StatelessWidget {
-  const AuthWidgetBuilder({Key key, @required this.builder}) : super(key: key);
+  const AuthWidgetBuilder({Key? key, required this.builder}) : super(key: key);
 
-  final Widget Function(BuildContext, AsyncSnapshot<AppUser>) builder;
+  final Widget Function(BuildContext, AsyncSnapshot<AppUser?>) builder;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AppUser>(
-      stream: context.watch<AuthViewModel>().user,
-      builder: (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
-        final AppUser user = snapshot.data;
+    return StreamBuilder<AppUser?>(
+      stream: context.watch<AuthViewModel>().user as Stream<AppUser?>?,
+      builder: (BuildContext context, AsyncSnapshot<AppUser?> snapshot) {
+        final AppUser? user = snapshot.data;
         if (user != null) {
           return MultiProvider(
             providers: [
@@ -135,7 +135,7 @@ class AuthWidgetBuilder extends StatelessWidget {
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer(
-      {Key key, @required this.activatedRoute, this.avatarRadius = 35})
+      {Key? key, required this.activatedRoute, this.avatarRadius = 35})
       : super(key: key);
 
   final String activatedRoute;
@@ -167,13 +167,13 @@ class AppDrawer extends StatelessWidget {
               // Avatar border
               currentAccountPicture: AvatarWithBorder(
                 radius: avatarRadius,
-                imageUrl: user.twter.avatar.toString(),
+                imageUrl: user.twter!.avatar.toString(),
               ),
               accountName: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user.profile.username),
-                  Text(user.profile.uri.authority),
+                  Text(user.profile!.username!),
+                  Text(user.profile!.uri!.authority),
                 ],
               ),
               accountEmail: null,
@@ -202,8 +202,8 @@ class PostActions extends StatelessWidget {
   final Twt twt;
 
   const PostActions({
-    Key key,
-    @required this.twt,
+    Key? key,
+    required this.twt,
   }) : super(key: key);
 
   @override
@@ -227,8 +227,8 @@ class PostActions extends StatelessWidget {
                   Navigator.pop(context);
                   Share.share(context
                       .read<AppUser>()
-                      .profile
-                      .uri
+                      .profile!
+                      .uri!
                       .replace(
                         path: "/twt/${twt.hash}",
                       )
@@ -256,11 +256,11 @@ class PostActions extends StatelessWidget {
 
 class PostList extends StatefulWidget {
   const PostList({
-    Key key,
-    @required this.fetchNewPost,
-    @required this.gotoNextPage,
-    @required this.twts,
-    @required this.fetchMoreState,
+    Key? key,
+    required this.fetchNewPost,
+    required this.gotoNextPage,
+    required this.twts,
+    required this.fetchMoreState,
     this.topSlivers = const <Widget>[],
     this.afterReply,
     this.showReplyButton = true,
@@ -269,12 +269,12 @@ class PostList extends StatefulWidget {
 
   final Function fetchNewPost;
   final Function gotoNextPage;
-  final List<Twt> twts;
+  final List<Twt>? twts;
   final List<Widget> topSlivers;
   final FetchState fetchMoreState;
   final bool showReplyButton;
   final bool showConversationButton;
-  final Function() afterReply;
+  final Function()? afterReply;
 
   @override
   _PostListState createState() => _PostListState();
@@ -299,7 +299,7 @@ class _PostListState extends State<PostList> {
 
   void pushToProfileScreen(
     BuildContext context,
-    Twter twter,
+    Twter? twter,
   ) {
     final user = context.read<AppUser>();
     final api = context.read<Api>();
@@ -316,7 +316,7 @@ class _PostListState extends State<PostList> {
     );
   }
 
-  Twter getNickFromTwtxtURL(String link) {
+  Twter? getNickFromTwtxtURL(String link) {
     Uri uri;
     try {
       uri = Uri.parse(link);
@@ -410,7 +410,7 @@ class _PostListState extends State<PostList> {
         },
       ),
       onTapLink: (text, link, title) async {
-        final twter = getNickFromTwtxtURL(link);
+        final twter = getNickFromTwtxtURL(link!);
         if (twter != null) {
           pushToProfileScreen(context, twter);
           return;
@@ -444,7 +444,7 @@ class _PostListState extends State<PostList> {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (_, idx) {
-              final twt = widget.twts[idx];
+              final twt = widget.twts![idx];
 
               return ListTile(
                 contentPadding: EdgeInsets.fromLTRB(16, 16, 8, 6),
@@ -459,20 +459,20 @@ class _PostListState extends State<PostList> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Avatar(imageUrl: twt.twter.avatar.toString()),
+                          Avatar(imageUrl: twt.twter!.avatar.toString()),
                           SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                twt.twter.nick,
+                                twt.twter!.nick!,
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                               SizedBox(height: 4),
                               Row(
                                 children: [
                                   Text(
-                                    Jiffy(twt.createdTime.toLocal())
+                                    Jiffy(twt.createdTime!.toLocal())
                                         .format('jm'),
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
@@ -538,7 +538,7 @@ class _PostListState extends State<PostList> {
                                 MaterialPageRoute(
                                   builder: (_) => NewTwt(
                                     initialText: twt.replyText(
-                                      user.profile.username,
+                                      user.profile!.username,
                                     ),
                                   ),
                                 ),
@@ -552,7 +552,7 @@ class _PostListState extends State<PostList> {
                           ),
                         SizedBox(width: 8),
                         if (widget.showConversationButton &&
-                            twt.subject.isNotEmpty)
+                            twt.subject!.isNotEmpty)
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               shape: StadiumBorder(),
@@ -582,7 +582,7 @@ class _PostListState extends State<PostList> {
                 ),
               );
             },
-            childCount: widget.twts.length,
+            childCount: widget.twts!.length,
           ),
         ),
         SliverToBoxAdapter(
@@ -598,7 +598,7 @@ class _PostListState extends State<PostList> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32.0),
                     child: UnexpectedErrorMessage(
-                      onRetryPressed: widget.gotoNextPage,
+                      onRetryPressed: widget.gotoNextPage as void Function(),
                     ),
                   );
                 default:
@@ -614,11 +614,11 @@ class _PostListState extends State<PostList> {
 
 class UnexpectedErrorMessage extends StatelessWidget {
   final VoidCallback onRetryPressed;
-  final String description;
-  final String buttonLabel;
+  final String? description;
+  final String? buttonLabel;
   const UnexpectedErrorMessage({
-    Key key,
-    @required this.onRetryPressed,
+    Key? key,
+    required this.onRetryPressed,
     this.buttonLabel,
     this.description,
   }) : super(key: key);
@@ -650,11 +650,11 @@ class UnexpectedErrorMessage extends StatelessWidget {
 }
 
 class ErrorMessage extends StatelessWidget {
-  final VoidCallback onButtonPressed;
-  final Widget description;
-  final Widget buttonChild;
+  final VoidCallback? onButtonPressed;
+  final Widget? description;
+  final Widget? buttonChild;
   const ErrorMessage({
-    Key key,
+    Key? key,
     this.onButtonPressed,
     this.buttonChild,
     this.description,
@@ -666,7 +666,7 @@ class ErrorMessage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          description,
+          description!,
           RaisedButton(
             color: Theme.of(context).colorScheme.error,
             onPressed: onButtonPressed,
@@ -682,11 +682,11 @@ class DropdownFormField<T> extends FormField<T> {
   DropdownFormField(
     BuildContext context,
     List<DropdownMenuItem<T>> dropDownItems, {
-    FormFieldSetter<T> onSaved,
-    FormFieldValidator<T> validator,
-    T initialValue,
+    FormFieldSetter<T>? onSaved,
+    FormFieldValidator<T>? validator,
+    T? initialValue,
     bool isExpanded = false,
-    Widget hint,
+    Widget? hint,
   }) : super(
           onSaved: onSaved,
           validator: validator,
@@ -698,7 +698,7 @@ class DropdownFormField<T> extends FormField<T> {
                 DropdownButton<T>(
                   onTap: () {
                     // https://github.com/flutter/flutter/issues/47128#issuecomment-627551073
-                    FocusManager.instance.primaryFocus.unfocus();
+                    FocusManager.instance.primaryFocus!.unfocus();
                   },
                   value: state.value,
                   isExpanded: isExpanded,
@@ -726,8 +726,8 @@ class DropdownFormField<T> extends FormField<T> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      state.errorText,
-                      style: theme.textTheme.caption.copyWith(
+                      state.errorText!,
+                      style: theme.textTheme.caption!.copyWith(
                         color: theme.errorColor,
                       ),
                     ),

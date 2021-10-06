@@ -8,7 +8,7 @@ part of 'models.dart';
 
 AppUser _$AppUserFromJson(Map<String, dynamic> json) {
   return AppUser(
-    token: json['token'] as String,
+    token: json['token'] as String?,
     profile: json['profile'] == null
         ? null
         : Profile.fromJson(json['profile'] as Map<String, dynamic>),
@@ -26,11 +26,11 @@ Map<String, dynamic> _$AppUserToJson(AppUser instance) => <String, dynamic>{
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
-    json['Username'] as String,
-    json['Tagline'] as String,
-    json['Email'] as String,
-    json['IsFollowersPubliclyVisible'] as bool,
-    json['IsFollowingPubliclyVisible'] as bool,
+    json['Username'] as String?,
+    json['Tagline'] as String?,
+    json['Email'] as String?,
+    json['IsFollowersPubliclyVisible'] as bool?,
+    json['IsFollowingPubliclyVisible'] as bool?,
   );
 }
 
@@ -44,7 +44,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
 
 AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) {
   return AuthResponse(
-    token: json['token'] as String,
+    token: json['token'] as String?,
   );
 }
 
@@ -55,9 +55,9 @@ Map<String, dynamic> _$AuthResponseToJson(AuthResponse instance) =>
 
 PagerResponse _$PagerResponseFromJson(Map<String, dynamic> json) {
   return PagerResponse(
-    currentPage: json['current_page'] as int,
-    maxPages: json['max_pages'] as int,
-    totalTwts: json['total_twts'] as int,
+    currentPage: json['current_page'] as int?,
+    maxPages: json['max_pages'] as int?,
+    totalTwts: json['total_twts'] as int?,
   );
 }
 
@@ -70,10 +70,10 @@ Map<String, dynamic> _$PagerResponseToJson(PagerResponse instance) =>
 
 Twter _$TwterFromJson(Map<String, dynamic> json) {
   return Twter(
-    nick: json['nick'] as String,
+    nick: json['nick'] as String?,
     uri: json['url'] == null ? null : Uri.parse(json['url'] as String),
     avatar: json['avatar'] == null ? null : Uri.parse(json['avatar'] as String),
-    slug: json['slug'] as String,
+    slug: json['slug'] as String?,
   );
 }
 
@@ -89,14 +89,14 @@ Twt _$TwtFromJson(Map<String, dynamic> json) {
     twter: json['twter'] == null
         ? null
         : Twter.fromJson(json['twter'] as Map<String, dynamic>),
-    text: json['text'] as String,
-    markdownText: json['markdownText'] as String,
+    text: json['text'] as String?,
+    markdownText: json['markdownText'] as String?,
     createdTime: json['created'] == null
         ? null
         : DateTime.parse(json['created'] as String),
-    hash: json['hash'] as String,
-    tags: (json['tags'] as List)?.map((e) => e as String)?.toList(),
-    subject: json['subject'] as String,
+    hash: json['hash'] as String?,
+    tags: (json['tags'] as List?)?.map((e) => e as String)?.toList(),
+    subject: json['subject'] as String?,
   );
 }
 
@@ -113,11 +113,9 @@ Map<String, dynamic> _$TwtToJson(Twt instance) => <String, dynamic>{
 PagedResponse _$PagedResponseFromJson(Map<String, dynamic> json) {
   return PagedResponse(
     (json['twts'] as List)
-        ?.map((e) => e == null ? null : Twt.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    json['Pager'] == null
-        ? null
-        : PagerResponse.fromJson(json['Pager'] as Map<String, dynamic>),
+        .map((e) => Twt.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    PagerResponse.fromJson(json['Pager'] as Map<String, dynamic>),
   );
 }
 
@@ -129,8 +127,8 @@ Map<String, dynamic> _$PagedResponseToJson(PagedResponse instance) =>
 
 PostRequest _$PostRequestFromJson(Map<String, dynamic> json) {
   return PostRequest(
-    json['post_as'] as String,
-    json['text'] as String,
+    json['post_as'] as String?,
+    json['text'] as String?,
   );
 }
 
@@ -142,20 +140,14 @@ Map<String, dynamic> _$PostRequestToJson(PostRequest instance) =>
 
 ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) {
   return ProfileResponse(
-    json['profile'] == null
-        ? null
-        : Profile.fromJson(json['profile'] as Map<String, dynamic>),
+    Profile.fromJson(json['profile'] as Map<String, dynamic>),
     (json['links'] as List)
-        ?.map(
-            (e) => e == null ? null : Link.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+        .map((e) => Link.fromJson(e as Map<String, dynamic>))
+        .toList(),
     (json['alternatives'] as List)
-        ?.map((e) =>
-            e == null ? null : Alternative.fromJson(e as Map<String, dynamic>))
+        .map((e) => Alternative.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['twter'] == null
-        ? null
-        : Twter.fromJson(json['twter'] as Map<String, dynamic>),
+    Twter.fromJson(json['twter'] as Map<String, dynamic>),
   );
 }
 
@@ -169,19 +161,19 @@ Map<String, dynamic> _$ProfileResponseToJson(ProfileResponse instance) =>
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) {
   return Profile(
-    json['Type'] as String,
-    json['Username'] as String,
+    json['Type'] as String?,
+    json['Username'] as String?,
     json['URL'] == null ? null : Uri.parse(json['URL'] as String),
-    (json['Followers'] as Map<String, dynamic>)?.map(
+    (json['Followers'] as Map<String, dynamic>?)?.map(
       (k, e) => MapEntry(k, e as String),
     ),
-    (json['Following'] as Map<String, dynamic>)?.map(
+    (json['Following'] as Map<String, dynamic>?)?.map(
       (k, e) => MapEntry(k, e as String),
     ),
-    json['Tagline'] as String ?? '',
-    json['Muted'] as bool,
-    json['FollowedBy'] as bool,
-    json['Follows'] as bool,
+    json['Tagline'] as String? ?? '',
+    json['Muted'] as bool?,
+    json['FollowedBy'] as bool?,
+    json['Follows'] as bool?,
   );
 }
 
@@ -199,8 +191,8 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
 
 Link _$LinkFromJson(Map<String, dynamic> json) {
   return Link(
-    json['Href'] as String,
-    json['Rel'] as String,
+    json['Href'] as String?,
+    json['Rel'] as String?,
   );
 }
 
@@ -211,9 +203,9 @@ Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
 
 Alternative _$AlternativeFromJson(Map<String, dynamic> json) {
   return Alternative(
-    json['Type'] as String,
-    json['Title'] as String,
-    json['URL'] as String,
+    json['Type'] as String?,
+    json['Title'] as String?,
+    json['URL'] as String?,
   );
 }
 

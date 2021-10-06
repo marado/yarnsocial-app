@@ -11,7 +11,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  Future _loginFuture;
+  Future? _loginFuture;
   final _passwordTextController = TextEditingController();
   final _podURLController = TextEditingController();
   final _usernameTextController = TextEditingController();
@@ -24,12 +24,12 @@ class _LoginState extends State<Login> {
             _podURLController.text,
           );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
-  String requiredFieldValidator(String value) {
-    if (value.isEmpty) {
+  String? requiredFieldValidator(String? value) {
+    if (value!.isEmpty) {
       return 'Required';
     }
     return null;
@@ -85,7 +85,7 @@ class _LoginState extends State<Login> {
 
                   return RaisedButton(
                     onPressed: () {
-                      if (!_formKey.currentState.validate()) return;
+                      if (!_formKey.currentState!.validate()) return;
 
                       setState(() {
                         _loginFuture = _handleLogin(context);

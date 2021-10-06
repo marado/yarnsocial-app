@@ -1,5 +1,5 @@
 class FormValidators {
-  static String requiredField(String fieldValue) {
+  static String? requiredField(String? fieldValue) {
     if ((fieldValue ?? '').isEmpty) {
       return 'Required';
     }

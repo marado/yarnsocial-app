@@ -9,24 +9,24 @@ import '../widgets/common_widgets.dart';
 class Report extends StatefulWidget {
   static const String routePath = "/report";
   final String initialMessage;
-  final String nick;
+  final String? nick;
   final String url;
   final void Function() afterSubmit;
 
   const Report({
-    Key key,
+    Key? key,
     this.initialMessage = '',
-    @required this.afterSubmit,
-    @required this.nick,
-    @required this.url,
+    required this.afterSubmit,
+    required this.nick,
+    required this.url,
   }) : super(key: key);
   @override
   _ReportState createState() => _ReportState();
 }
 
 class _ReportState extends State<Report> {
-  Future _submitFuture;
-  String _categoryValue = '';
+  Future? _submitFuture;
+  String? _categoryValue = '';
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -191,11 +191,11 @@ class _ReportState extends State<Report> {
                     onPressed: isLoading
                         ? null
                         : () {
-                            if (!_formKey.currentState.validate()) {
+                            if (!_formKey.currentState!.validate()) {
                               return;
                             }
 
-                            _formKey.currentState.save();
+                            _formKey.currentState!.save();
                             setState(() {
                               _submitFuture = submitForm(context);
                             });

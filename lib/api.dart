@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -14,8 +15,8 @@ class Api {
 
   Api(this._httpClient, this._flutterSecureStorage);
 
-  Future<AppUser> get user async {
-    String json = await _flutterSecureStorage.read(key: tokenKey);
+  Future<AppUser?> get user async {
+    String? json = await _flutterSecureStorage.read(key: tokenKey);
     if (json == null) {
       return null;
     }
@@ -60,9 +61,9 @@ class Api {
   }
 
   Future<AppUser> getAppUser() async {
-    var _user = await user;
+    var _user = await (user as FutureOr<AppUser>);
 
-    final profileResponse = await getProfile(_user.profile.username);
+    final profileResponse = await getProfile(_user.profile!.username);
 
     _user = _user.copyWith(
         profile: profileResponse.profile, twter: profileResponse.twter);
@@ -90,12 +91,12 @@ class Api {
   }
 
   Future<PagedResponse> timeline(int page) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/timeline"),
+      _user.profile!.uri!.replace(path: "/api/v1/timeline"),
       body: jsonEncode({'page': page}),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -108,12 +109,12 @@ class Api {
   }
 
   Future<PagedResponse> mentions(int page) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/mentions"),
+      _user.profile!.uri!.replace(path: "/api/v1/mentions"),
       body: jsonEncode({'page': page}),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -126,12 +127,12 @@ class Api {
   }
 
   Future<PagedResponse> discover(int page) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/discover"),
+      _user.profile!.uri!.replace(path: "/api/v1/discover"),
       body: jsonEncode({'page': page}),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -144,12 +145,12 @@ class Api {
   }
 
   Future<void> savePost(String text) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/post"),
+      _user.profile!.uri!.replace(path: "/api/v1/post"),
       body: jsonEncode({'text': text, 'post_as': "me"}),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -159,13 +160,13 @@ class Api {
     }
   }
 
-  Future<void> follow(String nick, String url) async {
-    final _user = await user;
+  Future<void> follow(String? nick, String url) async {
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/follow"),
+      _user.profile!.uri!.replace(path: "/api/v1/follow"),
       body: jsonEncode({'nick': nick, 'url': url}),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -177,13 +178,13 @@ class Api {
     }
   }
 
-  Future<void> unfollow(String nick) async {
-    final _user = await user;
+  Future<void> unfollow(String? nick) async {
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/unfollow"),
+      _user.profile!.uri!.replace(path: "/api/v1/unfollow"),
       body: jsonEncode({'nick': nick}),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -195,13 +196,13 @@ class Api {
     }
   }
 
-  Future<String> uploadImage(String filePath) async {
-    final _user = await user;
+  Future<String?> uploadImage(String filePath) async {
+    final _user = await (user as FutureOr<AppUser>);
     final request = http.MultipartRequest(
       'POST',
-      _user.profile.uri.replace(path: "/api/v1/upload"),
+      _user.profile!.uri!.replace(path: "/api/v1/upload"),
     )
-      ..headers['Token'] = _user.token
+      ..headers['Token'] = _user.token!
       ..files.add(
         await http.MultipartFile.fromPath(
           'media_file',
@@ -223,8 +224,8 @@ class Api {
     return jsonDecode(response.body)['Path'];
   }
 
-  Future<ProfileResponse> getProfile(String name,
-      {String token, Uri podURI}) async {
+  Future<ProfileResponse> getProfile(String? name,
+      {String? token, Uri? podURI}) async {
     http.Response response;
 
     if (token != null && podURI != null) {
@@ -236,11 +237,11 @@ class Api {
         },
       );
     } else {
-      final _user = await user;
+      final _user = await (user as FutureOr<AppUser>);
       response = await _httpClient.get(
-        _user.profile.uri.replace(path: "/api/v1/profile/$name"),
+        _user.profile!.uri!.replace(path: "/api/v1/profile/$name"),
         headers: {
-          'Token': _user.token,
+          'Token': _user.token!,
           HttpHeaders.contentTypeHeader: ContentType.json.toString(),
         },
       );
@@ -259,16 +260,16 @@ class Api {
     );
   }
 
-  Future<ProfileResponse> getExternalProfile(String nick, String url) async {
-    final _user = await user;
+  Future<ProfileResponse> getExternalProfile(String? nick, String url) async {
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/external"),
+      _user.profile!.uri!.replace(path: "/api/v1/external"),
       body: jsonEncode({
         "nick": nick,
         "url": url,
       }),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -286,18 +287,18 @@ class Api {
     );
   }
 
-  Future<PagedResponse> getUserTwts(int page, String nick,
+  Future<PagedResponse> getUserTwts(int page, String? nick,
       [String url = '']) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/fetch-twts"),
+      _user.profile!.uri!.replace(path: "/api/v1/fetch-twts"),
       body: jsonEncode({
         'page': page,
         'nick': nick,
         'url': url,
       }),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -310,16 +311,16 @@ class Api {
   }
 
   Future<void> submitReport(
-    String nick,
+    String? nick,
     String url,
     String name,
     String email,
-    String category,
+    String? category,
     String messsage,
   ) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/report"),
+      _user.profile!.uri!.replace(path: "/api/v1/report"),
       body: jsonEncode({
         'nick': nick,
         'url': url,
@@ -329,7 +330,7 @@ class Api {
         'message': messsage,
       }),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -339,16 +340,16 @@ class Api {
     }
   }
 
-  Future<void> mute(String nick, String url) async {
-    final _user = await user;
+  Future<void> mute(String? nick, String url) async {
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/mute"),
+      _user.profile!.uri!.replace(path: "/api/v1/mute"),
       body: jsonEncode({
         'nick': nick,
         'url': url,
       }),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -358,15 +359,15 @@ class Api {
     }
   }
 
-  Future<void> unmute(String nick) async {
-    final _user = await user;
+  Future<void> unmute(String? nick) async {
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/unmute"),
+      _user.profile!.uri!.replace(path: "/api/v1/unmute"),
       body: jsonEncode({
         'nick': nick,
       }),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -377,15 +378,15 @@ class Api {
   }
 
   Future<PagedResponse> fetchConversation(String hash, int page) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.post(
-      _user.profile.uri.replace(path: "/api/v1/conv"),
+      _user.profile!.uri!.replace(path: "/api/v1/conv"),
       body: jsonEncode({
         'page': page,
         'hash': hash,
       }),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -398,11 +399,11 @@ class Api {
   }
 
   Future<User> getUserSettings() async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final response = await _httpClient.get(
-      _user.profile.uri.replace(path: "/api/v1/settings"),
+      _user.profile!.uri!.replace(path: "/api/v1/settings"),
       headers: {
-        'Token': _user.token,
+        'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
@@ -414,20 +415,20 @@ class Api {
     return User.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
-  Future<String> saveSettings(
-    String avatarPath,
+  Future<String?> saveSettings(
+    String? avatarPath,
     String tagline,
     String password,
     String email,
     bool isFollowersPubliclyVisible,
     bool isFollowingPubliclyVisible,
   ) async {
-    final _user = await user;
+    final _user = await (user as FutureOr<AppUser>);
     final request = http.MultipartRequest(
       'POST',
-      _user.profile.uri.replace(path: "/api/v1/settings"),
+      _user.profile!.uri!.replace(path: "/api/v1/settings"),
     )
-      ..headers['Token'] = _user.token
+      ..headers['Token'] = _user.token!
       ..fields['tagline'] = tagline
       ..fields['password'] = password
       ..fields['email'] = email

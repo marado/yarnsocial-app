@@ -14,16 +14,16 @@ import 'timeline.dart';
 import 'mentions.dart';
 
 class AuthWidget extends StatefulWidget {
-  const AuthWidget({Key key, this.snapshot}) : super(key: key);
+  const AuthWidget({Key? key, required this.snapshot}) : super(key: key);
 
-  final AsyncSnapshot<AppUser> snapshot;
+  final AsyncSnapshot<AppUser?> snapshot;
 
   @override
   _AuthWidgetState createState() => _AuthWidgetState();
 }
 
 class _AuthWidgetState extends State<AuthWidget> {
-  StreamSubscription _userSub;
+  StreamSubscription? _userSub;
 
   @override
   void didChangeDependencies() {
@@ -45,8 +45,8 @@ class _AuthWidgetState extends State<AuthWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.snapshot.connectionState == ConnectionState.active) {
-      return widget.snapshot.hasData ? Home() : Login();
+    if (widget.snapshot!.connectionState == ConnectionState.active) {
+      return widget.snapshot!.hasData ? Home() : Login();
     }
 
     return Scaffold(
@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
     final _api = context.watch<Api>();
     return WillPopScope(
       onWillPop: () async {
-        return !await navigator.currentState.maybePop();
+        return !await navigator.currentState!.maybePop();
       },
       child: MultiProvider(
         providers: [

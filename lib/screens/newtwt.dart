@@ -14,7 +14,7 @@ import '../widgets/common_widgets.dart';
 import '../widgets/image_picker.dart';
 
 class NewTwt extends StatefulWidget {
-  const NewTwt({Key key, this.initialText = ''}) : super(key: key);
+  const NewTwt({Key? key, this.initialText = ''}) : super(key: key);
 
   final String initialText;
 
@@ -24,13 +24,13 @@ class NewTwt extends StatefulWidget {
 
 class _NewTwtState extends State<NewTwt> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _textController;
+  TextEditingController? _textController;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.initialText)
-      ..buildTextSpan(withComposing: true);
+      ..buildTextSpan(withComposing: true, context: this.context);
   }
 
   @override
@@ -47,7 +47,7 @@ class _NewTwtState extends State<NewTwt> {
           builder: (contxt, user, _) => Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Avatar(imageUrl: user.twter.avatar.toString()),
+              Avatar(imageUrl: user.twter!.avatar.toString()),
               const SizedBox(width: 16.0),
               Flexible(
                 child: NewTwtForm(
@@ -64,10 +64,10 @@ class _NewTwtState extends State<NewTwt> {
 }
 
 class NewTwtForm extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController textEditingController;
+  final GlobalKey<FormState>? formKey;
+  final TextEditingController? textEditingController;
 
-  const NewTwtForm({Key key, this.formKey, this.textEditingController})
+  const NewTwtForm({Key? key, this.formKey, this.textEditingController})
       : super(key: key);
 
   @override
@@ -79,8 +79,8 @@ class _NewTwtFormState extends State<NewTwtForm> {
   final _scrollbarController = ScrollController();
   final _picker = ImagePicker();
 
-  String _twtPrompt;
-  Future _uploadImageFuture;
+  String? _twtPrompt;
+  Future? _uploadImageFuture;
 
   @override
   void initState() {
@@ -94,7 +94,7 @@ class _NewTwtFormState extends State<NewTwtForm> {
   }
 
   void _surroundTextSelection(String left, String right) {
-    final textEditingController = widget.textEditingController;
+    final textEditingController = widget.textEditingController!;
     final currentTextValue = textEditingController.value.text;
     final selection = textEditingController.selection;
     final middle = selection.textInside(currentTextValue);
@@ -119,7 +119,7 @@ class _NewTwtFormState extends State<NewTwtForm> {
       }
 
       final imageURL = await context.read<Api>().uploadImage(pickedFile.path);
-      textEditingController.value = textEditingController.value.copyWith(
+      textEditingController!.value = textEditingController.value.copyWith(
         text: textEditingController.value.text + '![]($imageURL)',
       );
     } catch (_) {
@@ -239,12 +239,12 @@ class _NewTwtFormState extends State<NewTwtForm> {
 
 class SavePostButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  final TextEditingController textEditingController;
+  final TextEditingController? textEditingController;
 
   const SavePostButton({
-    Key key,
-    @required this.formKey,
-    @required this.textEditingController,
+    Key? key,
+    required this.formKey,
+    required this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -252,14 +252,14 @@ class SavePostButton extends StatefulWidget {
 }
 
 class _SavePostButtonState extends State<SavePostButton> {
-  Future _savePostFuture;
+  Future? _savePostFuture;
 
   void _submitPost() {
-    if (!widget.formKey.currentState.validate()) return;
+    if (!widget.formKey.currentState!.validate()) return;
     setState(() {
       _savePostFuture = context
           .read<Api>()
-          .savePost(widget.textEditingController.text)
+          .savePost(widget.textEditingController!.text)
           .then((value) => Navigator.pop(context, true));
     });
   }

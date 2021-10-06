@@ -18,7 +18,7 @@ class _FollowState extends State<Follow> {
   final _formKey = GlobalKey<FormState>();
   final _nicknameController = TextEditingController();
   final _urlController = TextEditingController();
-  Future _followFuture;
+  Future? _followFuture;
 
   Widget buildSuccessMessagePage(BuildContext context) {
     final appStrings = context.read<AppStrings>();
@@ -41,7 +41,7 @@ class _FollowState extends State<Follow> {
                 children: [
                   Text(
                     '${appStrings.followSuccessful}',
-                    style: Theme.of(context).textTheme.headline5.copyWith(
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
                           fontWeight: FontWeight.w400,
                         ),
                     textAlign: TextAlign.center,
@@ -112,7 +112,7 @@ class _FollowState extends State<Follow> {
           return FloatingActionButton.extended(
               label: label,
               onPressed: () {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState!.validate()) {
                   setState(() {
                     _followFuture = _follow();
                   });

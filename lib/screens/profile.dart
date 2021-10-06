@@ -9,17 +9,17 @@ import '../widgets/common_widgets.dart';
 import 'newtwt.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Future _fetchProfileFuture;
-  Future _followFuture;
-  Future _unFollowFuture;
-  Future _muteFuture;
+  Future? _fetchProfileFuture;
+  Future? _followFuture;
+  Future? _unFollowFuture;
+  Future? _muteFuture;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future _follow(String nick, String url, BuildContext context) async {
+  Future _follow(String? nick, String url, BuildContext context) async {
     try {
       await context.read<AuthViewModel>().follow(nick, url);
       Scaffold.of(context).showSnackBar(
@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future _unFollow(String nick, BuildContext context) async {
+  Future _unFollow(String? nick, BuildContext context) async {
     try {
       await context.read<AuthViewModel>().unfollow(nick);
       Scaffold.of(context).showSnackBar(
@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return [
       SliverAppBar(
-        title: Text(vm.name),
+        title: Text(vm.name!),
         pinned: true,
         elevation: 0,
       ),
@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Flexible(
                     flex: 1,
                     child: AvatarWithBorder(
-                      imageUrl: vm.twter.avatar.toString(),
+                      imageUrl: vm.twter!.avatar.toString(),
                       radius: 40,
                       borderThickness: 4,
                       borderColor: Theme.of(context).primaryColor,
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               SizedBox(height: 16),
-              if (vm.profile.tagline.isNotEmpty) Text(vm.profile.tagline),
+              if (vm.profile!.tagline.isNotEmpty) Text(vm.profile!.tagline),
               SizedBox(height: 4),
             ],
           ),
@@ -223,8 +223,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Builder(
               builder: (context) {
-                final username = vm.profile.username;
-                if (vm.profile.followedBy) {
+                final username = vm.profile!.username;
+                if (vm.profile!.followedBy!) {
                   return ListTile(
                     dense: true,
                     title: Text('@$username follows you'),
@@ -242,15 +242,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (!vm.isViewingOwnProfile) ...[
               Consumer<AppUser>(
                 builder: (context, user, _) {
-                  if (vm.profile.follows) {
+                  if (vm.profile!.follows!) {
                     return FutureBuilder(
                       future: _unFollowFuture,
                       builder: (context, snapshot) {
                         Widget leading = Icon(Icons.person_remove);
-                        Function onTap = () {
+                        Function? onTap = () {
                           setState(() {
                             _unFollowFuture = _unFollow(
-                              vm.twter.nick,
+                              vm.twter!.nick,
                               context,
                             );
                           });
@@ -266,7 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           dense: true,
                           title: Text('Unfollow'),
                           leading: leading,
-                          onTap: onTap,
+                          onTap: onTap as void Function()?,
                         );
                       },
                     );
@@ -276,11 +276,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     future: _followFuture,
                     builder: (context, snapshot) {
                       Widget leading = Icon(Icons.person_add_alt);
-                      Function onTap = () {
+                      Function? onTap = () {
                         setState(() {
                           _followFuture = _follow(
-                            vm.profile.username,
-                            vm.profile.uri.toString(),
+                            vm.profile!.username,
+                            vm.profile!.uri.toString(),
                             context,
                           );
                         });
@@ -295,7 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         dense: true,
                         title: Text('Follow'),
                         leading: leading,
-                        onTap: onTap,
+                        onTap: onTap as void Function()?,
                       );
                     },
                   );
@@ -314,8 +314,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fullscreenDialog: true,
                           builder: (_) {
                             return Report(
-                              nick: vm.profile.username,
-                              url: vm.profile.uri.toString(),
+                              nick: vm.profile!.username,
+                              url: vm.profile!.uri.toString(),
                               afterSubmit: () {
                                 Scaffold.of(context).showSnackBar(
                                   SnackBar(
@@ -339,7 +339,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 builder: (context, snapshot) {
                   final isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  if (vm.profile.muted) {
+                  if (vm.profile!.muted!) {
                     return ListTile(
                       dense: true,
                       onTap: isLoading
@@ -387,7 +387,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(vm.name),
+              title: Text(vm.name!),
             ),
             body: Center(
               child: CircularProgressIndicator(),
@@ -398,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(vm.name),
+              title: Text(vm.name!),
             ),
             body: Center(
               child: Column(
@@ -426,8 +426,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (context) => FloatingActionButton(
               child: Icon(Icons.add),
               onPressed: () async {
-                var mention = '${vm.profile.mention} ';
-                if (user.profile.username == vm.profile.username) {
+                var mention = '${vm.profile!.mention} ';
+                if (user.profile!.username == vm.profile!.username) {
                   mention = "";
                 }
 
@@ -461,16 +461,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 class UserList extends StatelessWidget {
   const UserList({
-    Key key,
-    @required this.usersAndURL,
-    @required this.title,
+    Key? key,
+    required this.usersAndURL,
+    required this.title,
   }) : super(key: key);
 
   final String title;
-  final Map<String, String> usersAndURL;
+  final Map<String?, String>? usersAndURL;
 
-  List<MapEntry<String, String>> get _usersAndURLEntry =>
-      usersAndURL.entries.toList();
+  List<MapEntry<String?, String>> get _usersAndURLEntry =>
+      usersAndURL!.entries.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -487,7 +487,7 @@ class UserList extends StatelessWidget {
               (BuildContext context, int index) {
                 final entry = _usersAndURLEntry[index];
                 return ListTile(
-                  title: Text(entry.key),
+                  title: Text(entry.key!),
                   subtitle: Text(Uri.parse(entry.value).host),
                   onTap: () {
                     Navigator.push(
@@ -510,7 +510,7 @@ class UserList extends StatelessWidget {
                   },
                 );
               },
-              childCount: usersAndURL.length,
+              childCount: usersAndURL!.length,
             ),
           )
         ],

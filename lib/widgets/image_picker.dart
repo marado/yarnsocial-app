@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<PickedFile> getImage(
+Future<PickedFile?> getImage(
   BuildContext context,
   ImagePicker picker,
 ) async {

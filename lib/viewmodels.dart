@@ -10,7 +10,7 @@ import 'models.dart';
 class AuthViewModel {
   final Api _api;
 
-  final _user = BehaviorSubject<AppUser>();
+  final _user = BehaviorSubject<AppUser?>();
 
   AuthViewModel(this._api) {
     getAppUser().catchError((_) {
@@ -27,17 +27,17 @@ class AuthViewModel {
     _user.add(null);
   }
 
-  Future<void> unfollow(String nick) async {
-    final user = await _user.first;
+  Future<void> unfollow(String? nick) async {
+    final user = await (_user.first as FutureOr<AppUser>);
     _api.unfollow(nick);
-    user.profile.following.remove(nick);
+    user.profile!.following!.remove(nick);
     _user.add(user);
   }
 
-  Future<void> follow(String nick, String url) async {
-    final user = await _user.first;
+  Future<void> follow(String? nick, String url) async {
+    final user = await (_user.first as FutureOr<AppUser>);
     _api.follow(nick, url);
-    user.profile.following.putIfAbsent(nick, () => url);
+    user.profile!.following!.putIfAbsent(nick, () => url);
     _user.add(user);
   }
 
@@ -71,16 +71,16 @@ class TimelineViewModel extends ChangeNotifier {
   TimelineViewModel(this._api);
 
   final Api _api;
-  PagedResponse _lastTimelineResponse;
+  late PagedResponse _lastTimelineResponse;
 
   FetchState _mainListState = FetchState.Done;
   FetchState _fetchMoreState = FetchState.Done;
-  List<Twt> _twts = [];
+  List<Twt>? _twts = [];
 
   FetchState get mainListState => _mainListState;
   FetchState get fetchMoreState => _fetchMoreState;
 
-  List<Twt> get twts => _twts;
+  List<Twt>? get twts => _twts;
 
   set mainListState(FetchState fetchState) {
     _mainListState = fetchState;
@@ -113,16 +113,16 @@ class TimelineViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastTimelineResponse.pagerResponse.currentPage ==
-        _lastTimelineResponse.pagerResponse.maxPages) {
+    if (_lastTimelineResponse.pagerResponse!.currentPage ==
+        _lastTimelineResponse.pagerResponse!.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastTimelineResponse.pagerResponse.currentPage + 1;
+      final page = _lastTimelineResponse.pagerResponse!.currentPage! + 1;
       _lastTimelineResponse = await _api.timeline(page);
-      _twts = [..._twts, ..._lastTimelineResponse.twts];
+      _twts = [..._twts!, ..._lastTimelineResponse.twts!];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -135,16 +135,16 @@ class MentionsViewModel extends ChangeNotifier {
   MentionsViewModel(this._api);
 
   final Api _api;
-  PagedResponse _lastMentionsResponse;
+  late PagedResponse _lastMentionsResponse;
 
   FetchState _mainListState = FetchState.Done;
   FetchState _fetchMoreState = FetchState.Done;
-  List<Twt> _twts = [];
+  List<Twt>? _twts = [];
 
   FetchState get mainListState => _mainListState;
   FetchState get fetchMoreState => _fetchMoreState;
 
-  List<Twt> get twts => _twts;
+  List<Twt>? get twts => _twts;
 
   set mainListState(FetchState fetchState) {
     _mainListState = fetchState;
@@ -177,16 +177,16 @@ class MentionsViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastMentionsResponse.pagerResponse.currentPage ==
-        _lastMentionsResponse.pagerResponse.maxPages) {
+    if (_lastMentionsResponse.pagerResponse!.currentPage ==
+        _lastMentionsResponse.pagerResponse!.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastMentionsResponse.pagerResponse.currentPage + 1;
+      final page = _lastMentionsResponse.pagerResponse!.currentPage! + 1;
       _lastMentionsResponse = await _api.mentions(page);
-      _twts = [..._twts, ..._lastMentionsResponse.twts];
+      _twts = [..._twts!, ..._lastMentionsResponse.twts!];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -202,10 +202,10 @@ class DiscoverViewModel extends ChangeNotifier {
   FetchState _mainListState = FetchState.Done;
   FetchState _fetchMoreState = FetchState.Done;
 
-  PagedResponse _lastTimelineResponse;
-  List<Twt> _twts = [];
+  late PagedResponse _lastTimelineResponse;
+  List<Twt>? _twts = [];
 
-  List<Twt> get twts => _twts;
+  List<Twt>? get twts => _twts;
 
   FetchState get mainListState => _mainListState;
   FetchState get fetchMoreState => _fetchMoreState;
@@ -240,16 +240,16 @@ class DiscoverViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastTimelineResponse.pagerResponse.currentPage ==
-        _lastTimelineResponse.pagerResponse.maxPages) {
+    if (_lastTimelineResponse.pagerResponse!.currentPage ==
+        _lastTimelineResponse.pagerResponse!.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastTimelineResponse.pagerResponse.currentPage + 1;
+      final page = _lastTimelineResponse.pagerResponse!.currentPage! + 1;
       _lastTimelineResponse = await _api.discover(page);
-      _twts = [..._twts, ..._lastTimelineResponse.twts];
+      _twts = [..._twts!, ..._lastTimelineResponse.twts!];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -260,35 +260,35 @@ class DiscoverViewModel extends ChangeNotifier {
 
 class ProfileViewModel extends ChangeNotifier {
   final Api _api;
-  final Profile _loggedInUserProfile;
-  final Twter _twter;
+  final Profile? _loggedInUserProfile;
+  final Twter? _twter;
 
-  ProfileResponse _profileResponse;
-  PagedResponse _lastTimelineResponse;
-  List<Twt> _twts = [];
+  ProfileResponse? _profileResponse;
+  late PagedResponse _lastTimelineResponse;
+  List<Twt>? _twts = [];
 
   FetchState _fetchMoreState = FetchState.Done;
 
-  List<Twt> get twts => _twts;
+  List<Twt>? get twts => _twts;
 
-  Profile get profile => _profileResponse.profile;
-  Twter get twter => _profileResponse.twter;
+  Profile? get profile => _profileResponse!.profile;
+  Twter? get twter => _profileResponse!.twter;
   bool get hasProfile => _profileResponse?.profile != null;
 
-  Map<String, String> get following => _profileResponse?.profile?.following;
+  Map<String?, String>? get following => _profileResponse?.profile?.following;
   int get followingCount => following?.length ?? 0;
   bool get hasFollowing => followingCount > 0;
 
-  Map<String, String> get followers => _profileResponse?.profile?.followers;
+  Map<String, String>? get followers => _profileResponse?.profile?.followers;
   int get followerCount => followers?.length ?? 0;
   bool get hasFollowers => followerCount > 0;
 
-  bool get isViewingOwnProfile => _loggedInUserProfile.uri == twter.uri;
-  bool get isProfileExternal => !_twter.isPodMember(_loggedInUserProfile.uri);
+  bool get isViewingOwnProfile => _loggedInUserProfile!.uri == twter!.uri;
+  bool get isProfileExternal => !_twter!.isPodMember(_loggedInUserProfile!.uri);
 
   FetchState get fetchMoreState => _fetchMoreState;
 
-  String get name => _twter.nick;
+  String? get name => _twter!.nick;
 
   set profileResponse(ProfileResponse profileResponse) {
     _profileResponse = profileResponse;
@@ -298,8 +298,8 @@ class ProfileViewModel extends ChangeNotifier {
   Future refreshPost() async {
     _lastTimelineResponse = await _api.getUserTwts(
       0,
-      _twter.nick,
-      _twter.uri.toString(),
+      _twter!.nick,
+      _twter!.uri.toString(),
     );
     _twts = _lastTimelineResponse.twts;
     notifyListeners();
@@ -317,23 +317,23 @@ class ProfileViewModel extends ChangeNotifier {
   Future<void> fetchProfile() async {
     if (isProfileExternal) {
       profileResponse =
-          await _api.getExternalProfile(_twter.nick, _twter.uri.toString());
+          await _api.getExternalProfile(_twter!.nick, _twter!.uri.toString());
       return;
     }
-    profileResponse = await _api.getProfile(_twter.nick);
+    profileResponse = await _api.getProfile(_twter!.nick);
   }
 
   Future<void> gotoNextPage() async {
-    if (_lastTimelineResponse.pagerResponse.currentPage ==
-        _lastTimelineResponse.pagerResponse.maxPages) {
+    if (_lastTimelineResponse.pagerResponse!.currentPage ==
+        _lastTimelineResponse.pagerResponse!.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastTimelineResponse.pagerResponse.currentPage + 1;
-      _lastTimelineResponse = await _api.getUserTwts(page, profile.username);
-      _twts = [..._twts, ..._lastTimelineResponse.twts];
+      final page = _lastTimelineResponse.pagerResponse!.currentPage! + 1;
+      _lastTimelineResponse = await _api.getUserTwts(page, profile!.username);
+      _twts = [..._twts!, ..._lastTimelineResponse.twts!];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -342,12 +342,12 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<void> mute() async {
-    await _api.mute(profile.username, profile.uri.toString());
+    await _api.mute(profile!.username, profile!.uri.toString());
     await fetchProfile();
   }
 
   Future<void> unmute() async {
-    await _api.unmute(profile.username);
+    await _api.unmute(profile!.username);
     await fetchProfile();
   }
 }
@@ -355,7 +355,7 @@ class ProfileViewModel extends ChangeNotifier {
 class ThemeViewModel extends ChangeNotifier {
   static const String ThemeModeKey = "theme_mode";
   final SharedPreferences _sharedPreferences;
-  ThemeMode _themeMode;
+  ThemeMode? _themeMode;
 
   ThemeViewModel(this._sharedPreferences) {
     assert(this._sharedPreferences != null);
@@ -365,7 +365,7 @@ class ThemeViewModel extends ChangeNotifier {
             0)]; // Uses ThemeMode.system by default
   }
 
-  ThemeMode get themeMode => _themeMode;
+  ThemeMode get themeMode => _themeMode!;
 
   set themeMode(ThemeMode mode) {
     _themeMode = mode;
@@ -385,16 +385,16 @@ class ConversationViewModel extends ChangeNotifier {
 
   final Api _api;
   final Twt _sourceTwt;
-  PagedResponse _lastMentionsResponse;
+  late PagedResponse _lastMentionsResponse;
 
   FetchState _mainListState = FetchState.Done;
   FetchState _fetchMoreState = FetchState.Done;
-  List<Twt> _twts = [];
+  List<Twt>? _twts = [];
 
   FetchState get mainListState => _mainListState;
   FetchState get fetchMoreState => _fetchMoreState;
 
-  List<Twt> get twts => _twts;
+  List<Twt>? get twts => _twts;
   String get replyFabInitialText => "${_sourceTwt.subject} ";
 
   set mainListState(FetchState fetchState) {
@@ -430,17 +430,17 @@ class ConversationViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastMentionsResponse.pagerResponse.currentPage ==
-        _lastMentionsResponse.pagerResponse.maxPages) {
+    if (_lastMentionsResponse.pagerResponse!.currentPage ==
+        _lastMentionsResponse.pagerResponse!.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastMentionsResponse.pagerResponse.currentPage + 1;
+      final page = _lastMentionsResponse.pagerResponse!.currentPage! + 1;
       _lastMentionsResponse =
           await _api.fetchConversation(_sourceTwt.cleanSubject, page);
-      _twts = [..._twts, ..._lastMentionsResponse.twts];
+      _twts = [..._twts!, ..._lastMentionsResponse.twts!];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;

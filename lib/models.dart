@@ -5,14 +5,14 @@ part 'models.g.dart';
 
 @JsonSerializable()
 class AppUser {
-  final Profile profile;
-  final String token;
-  final Twter twter;
+  final Profile? profile;
+  final String? token;
+  final Twter? twter;
 
   AppUser({
-    @required this.token,
-    @required this.profile,
-    @required this.twter,
+    required this.token,
+    required this.profile,
+    required this.twter,
   });
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>
@@ -20,9 +20,9 @@ class AppUser {
   Map<String, dynamic> toJson() => _$AppUserToJson(this);
 
   AppUser copyWith({
-    Profile profile,
-    String token,
-    Twter twter,
+    Profile? profile,
+    String? token,
+    Twter? twter,
   }) {
     return AppUser(
       profile: profile ?? this.profile,
@@ -35,15 +35,15 @@ class AppUser {
 @JsonSerializable()
 class User {
   @JsonKey(name: 'Username')
-  final String username;
+  final String? username;
   @JsonKey(name: 'Tagline')
-  final String tagline;
+  final String? tagline;
   @JsonKey(name: 'Email')
-  final String email;
+  final String? email;
   @JsonKey(name: 'IsFollowersPubliclyVisible')
-  final bool isFollowersPubliclyVisible;
+  final bool? isFollowersPubliclyVisible;
   @JsonKey(name: 'IsFollowingPubliclyVisible')
-  final bool isFollowingPubliclyVisible;
+  final bool? isFollowingPubliclyVisible;
 
   User(
     this.username,
@@ -59,7 +59,7 @@ class User {
 
 @JsonSerializable()
 class AuthResponse {
-  final String token;
+  final String? token;
 
   AuthResponse({this.token});
 
@@ -71,11 +71,11 @@ class AuthResponse {
 @JsonSerializable()
 class PagerResponse {
   @JsonKey(name: 'current_page')
-  final int currentPage;
+  final int? currentPage;
   @JsonKey(name: 'max_pages')
-  final int maxPages;
+  final int? maxPages;
   @JsonKey(name: 'total_twts')
-  final int totalTwts;
+  final int? totalTwts;
 
   PagerResponse({this.currentPage, this.maxPages, this.totalTwts});
 
@@ -87,25 +87,25 @@ class PagerResponse {
 @JsonSerializable()
 class Twter {
   @JsonKey(name: 'nick')
-  final String nick;
+  final String? nick;
 
   // uri is the twtxt for this twter. If uri is set to null, it usually means that it's an
   // external user
   @JsonKey(name: 'url')
-  final Uri uri;
+  final Uri? uri;
 
   @JsonKey(name: 'avatar')
-  final Uri avatar;
+  final Uri? avatar;
   @JsonKey(name: 'slug')
-  final String slug;
+  final String? slug;
 
   Twter({this.nick, this.uri, this.avatar, this.slug});
 
-  bool isPodMember(Uri podUri) {
+  bool isPodMember(Uri? podUri) {
     if (uri == null) {
       return false;
     }
-    return podUri.authority == uri.authority;
+    return podUri!.authority == uri!.authority;
   }
 
   factory Twter.fromJson(Map<String, dynamic> json) => _$TwterFromJson(json);
@@ -115,26 +115,26 @@ class Twter {
 @JsonSerializable()
 class Twt {
   @JsonKey(name: 'twter')
-  final Twter twter;
+  final Twter? twter;
   @JsonKey(name: 'text')
-  final String text;
+  final String? text;
   @JsonKey(name: 'markdownText')
-  final String markdownText;
+  final String? markdownText;
   @JsonKey(name: 'created')
-  final DateTime createdTime;
+  final DateTime? createdTime;
   @JsonKey(name: 'hash')
-  final String hash;
+  final String? hash;
   @JsonKey(name: 'tags')
-  final List<String> tags;
+  final List<String>? tags;
   @JsonKey(name: 'subject')
-  final String subject;
+  final String? subject;
 
   static final mentionAndHashtagExp = RegExp(r'(@|#)<([^ ]+) *([^>]+)>');
   static final mentionsExp = RegExp(r"@<(.*?) .*?>");
   static final subjectExp = RegExp(r"^(@<.*>[, ]*)*(\(.*?\))(.*)");
 
-  String get cleanMDText => markdownText.replaceAll("\u2028", "\n").trim();
-  String get cleanSubject => subject.replaceAll(RegExp(r"[\(\#]|\)"), "");
+  String get cleanMDText => markdownText!.replaceAll("\u2028", "\n").trim();
+  String get cleanSubject => subject!.replaceAll(RegExp(r"[\(\#]|\)"), "");
 
   Twt(
       {this.twter,
@@ -145,20 +145,20 @@ class Twt {
       this.tags,
       this.subject});
 
-  Set<String> get mentions =>
-      mentionsExp.allMatches(text).map((e) => e.group(1)).toSet();
+  Set<String?> get mentions =>
+      mentionsExp.allMatches(text!).map((e) => e.group(1)).toSet();
 
-  String replyText(String usernameToExclude) {
+  String replyText(String? usernameToExclude) {
     var _subject = subject;
 
     final _mentions = mentions
-      ..add(twter.nick)
+      ..add(twter!.nick)
       ..remove(usernameToExclude);
 
     final mentionsStr = _mentions.map((e) => "@$e").join(" ");
 
     if (_subject != "") {
-      _subject = _subject.replaceAllMapped(mentionAndHashtagExp, (match) {
+      _subject = _subject!.replaceAllMapped(mentionAndHashtagExp, (match) {
         final prefix = match.group(1);
         final nick = match.group(2);
         return "$prefix$nick";
@@ -190,8 +190,8 @@ class PagedResponse {
 @JsonSerializable()
 class PostRequest {
   @JsonKey(name: 'post_as')
-  final String postAs;
-  final String text;
+  final String? postAs;
+  final String? text;
 
   PostRequest(this.postAs, this.text);
   factory PostRequest.fromJson(Map<String, dynamic> json) =>
@@ -201,10 +201,10 @@ class PostRequest {
 
 @JsonSerializable()
 class ProfileResponse {
-  final Profile profile;
-  final List<Link> links;
-  final List<Alternative> alternatives;
-  final Twter twter;
+  final Profile? profile;
+  final List<Link>? links;
+  final List<Alternative>? alternatives;
+  final Twter? twter;
 
   ProfileResponse(this.profile, this.links, this.alternatives, this.twter);
 
@@ -216,23 +216,23 @@ class ProfileResponse {
 @JsonSerializable()
 class Profile {
   @JsonKey(name: 'Type')
-  final String type;
+  final String? type;
   @JsonKey(name: 'Username')
-  final String username;
+  final String? username;
   @JsonKey(name: 'URL')
-  final Uri uri;
+  final Uri? uri;
   @JsonKey(name: 'Followers')
-  final Map<String, String> followers;
+  final Map<String, String>? followers;
   @JsonKey(name: 'Following')
-  final Map<String, String> following;
+  final Map<String?, String>? following;
   @JsonKey(name: 'Tagline', defaultValue: '')
   final String tagline;
   @JsonKey(name: 'Muted')
-  final bool muted;
+  final bool? muted;
   @JsonKey(name: 'FollowedBy')
-  final bool followedBy;
+  final bool? followedBy;
   @JsonKey(name: 'Follows')
-  final bool follows;
+  final bool? follows;
 
   Profile(
     this.type,
@@ -251,7 +251,7 @@ class Profile {
   }
 
   bool isFollowing(String uri) {
-    return following.containsValue(uri);
+    return following!.containsValue(uri);
   }
 
   factory Profile.fromJson(Map<String, dynamic> json) =>
@@ -262,9 +262,9 @@ class Profile {
 @JsonSerializable()
 class Link {
   @JsonKey(name: 'Href')
-  final String href;
+  final String? href;
   @JsonKey(name: 'Rel')
-  final String rel;
+  final String? rel;
 
   Link(this.href, this.rel);
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
@@ -274,11 +274,11 @@ class Link {
 @JsonSerializable()
 class Alternative {
   @JsonKey(name: 'Type')
-  final String type;
+  final String? type;
   @JsonKey(name: 'Title')
-  final String title;
+  final String? title;
   @JsonKey(name: 'URL')
-  final String url;
+  final String? url;
 
   Alternative(this.type, this.title, this.url);
   factory Alternative.fromJson(Map<String, dynamic> json) =>

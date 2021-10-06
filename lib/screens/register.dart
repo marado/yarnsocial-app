@@ -18,7 +18,7 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   final _passwordTextController = TextEditingController();
   final _podURLController = TextEditingController();
-  Future _registerFuture;
+  Future? _registerFuture;
   final _usernameTextController = TextEditingController();
 
   Future _handleRegister(BuildContext context) async {
@@ -37,7 +37,7 @@ class _RegisterState extends State<Register> {
           );
       Navigator.pop(context, true);
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
       rethrow;
     }
   }
@@ -147,7 +147,7 @@ class _RegisterState extends State<Register> {
                         onPressed: !_communityGuidelineToggle
                             ? null
                             : () {
-                                if (!_formKey.currentState.validate()) return;
+                                if (!_formKey.currentState!.validate()) return;
 
                                 setState(() {
                                   _registerFuture = _handleRegister(context);
