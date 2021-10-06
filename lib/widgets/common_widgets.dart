@@ -409,7 +409,7 @@ class _PostListState extends State<PostList> {
           );
         },
       ),
-      onTapLink: (link) async {
+      onTapLink: (text, link, title) async {
         final twter = getNickFromTwtxtURL(link);
         if (twter != null) {
           pushToProfileScreen(context, twter);
