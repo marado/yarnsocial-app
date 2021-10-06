@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/sh
 
 if [ -z "${ANDROID_KEY_STORE_PWD}" ]; then
   echo "ANDROID_KEY_STORE_PWD not found, abort"
@@ -25,8 +24,6 @@ fi
 echo "${RELEASE_KEYSTORE}" > release.keystore.asc
 gpg -d --passphrase "${RELEASE_KEYSTORE_PASSPHRASE}" --batch release.keystore.asc > android/app/key.jks
 
-
 mkdir -p keys/android
 echo "${RELEASE_SERVICE_ACCOUNT_KEYSTORE}" > service_account.keystore.asc
 gpg -d --passphrase "${RELEASE_KEYSTORE_PASSPHRASE}" --batch service_account.keystore.asc > keys/android/service_account.json
-
