@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:goryon/screens/report.dart';
 import 'package:provider/provider.dart';
@@ -396,6 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
 
         if (snapshot.hasError) {
+          debugPrint("stacktrace: " + snapshot.stackTrace.toString());
           return Scaffold(
             appBar: AppBar(
               title: Text(vm.name!),
@@ -404,7 +407,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Failed to load profile'),
+                  Text('Failed to load profile: ' + snapshot.error.toString()),
                   SizedBox(height: 32),
                   RaisedButton(
                     color: Theme.of(context).colorScheme.error,

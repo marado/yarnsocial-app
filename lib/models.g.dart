@@ -112,9 +112,11 @@ Map<String, dynamic> _$TwtToJson(Twt instance) => <String, dynamic>{
 
 PagedResponse _$PagedResponseFromJson(Map<String, dynamic> json) {
   return PagedResponse(
-    (json['twts'] as List)
-        .map((e) => Twt.fromJson(e as Map<String, dynamic>))
-        .toList(),
+    json['twts'] == null
+        ? []
+        : (json['twts'] as List)
+            .map((e) => Twt.fromJson(e as Map<String, dynamic>))
+            .toList(),
     PagerResponse.fromJson(json['Pager'] as Map<String, dynamic>),
   );
 }
@@ -141,12 +143,16 @@ Map<String, dynamic> _$PostRequestToJson(PostRequest instance) =>
 ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) {
   return ProfileResponse(
     Profile.fromJson(json['profile'] as Map<String, dynamic>),
-    (json['links'] as List)
-        .map((e) => Link.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    (json['alternatives'] as List)
-        .map((e) => Alternative.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    json['links'] == null
+        ? null
+        : (json['links'] as List)
+            .map((e) => Link.fromJson(e as Map<String, dynamic>))
+            .toList(),
+    json['alternatives'] == null
+        ? null
+        : (json['alternatives'] as List)
+            .map((e) => Alternative.fromJson(e as Map<String, dynamic>))
+            .toList(),
     Twter.fromJson(json['twter'] as Map<String, dynamic>),
   );
 }

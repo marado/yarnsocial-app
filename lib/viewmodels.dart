@@ -202,7 +202,7 @@ class DiscoverViewModel extends ChangeNotifier {
   FetchState _mainListState = FetchState.Done;
   FetchState _fetchMoreState = FetchState.Done;
 
-  late PagedResponse _lastTimelineResponse;
+  late PagedResponse _lastTimelineResponse = PagedResponse([], PagerResponse());
   List<Twt>? _twts = [];
 
   List<Twt>? get twts => _twts;
