@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Twtxt')),
+      appBar: AppBar(title: Text('Yarn.social')),
       body: AutofillGroup(
         child: Form(
           key: _formKey,
