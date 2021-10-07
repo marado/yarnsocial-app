@@ -62,6 +62,7 @@ class _ConversationState extends State<Conversation> {
                     afterReply: () async {
                       await vm.refreshPost();
                     },
+                    showForkButton: true,
                     showConversationButton: false,
                     gotoNextPage: vm.gotoNextPage,
                     fetchNewPost: vm.fetchNewPost,

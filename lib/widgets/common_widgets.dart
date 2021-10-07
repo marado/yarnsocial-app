@@ -264,6 +264,7 @@ class PostList extends StatefulWidget {
     this.topSlivers = const <Widget>[],
     this.afterReply,
     this.showReplyButton = true,
+    this.showForkButton = false,
     this.showConversationButton = true,
   }) : super(key: key);
 
@@ -273,6 +274,7 @@ class PostList extends StatefulWidget {
   final List<Widget> topSlivers;
   final FetchState fetchMoreState;
   final bool showReplyButton;
+  final bool showForkButton;
   final bool showConversationButton;
   final Function()? afterReply;
 
@@ -547,6 +549,30 @@ class _PostListState extends State<PostList> {
                             },
                             child: Text(
                               "Reply",
+                              style: Theme.of(context).textTheme.button,
+                            ),
+                          ),
+                        SizedBox(width: 8),
+                        if (widget.showForkButton)
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              shape: StadiumBorder(),
+                            ),
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => NewTwt(
+                                    initialText: twt.forkText(
+                                      user.profile!.username,
+                                    ),
+                                  ),
+                                ),
+                              );
+                              widget.afterReply?.call();
+                            },
+                            child: Text(
+                              "Fork",
                               style: Theme.of(context).textTheme.button,
                             ),
                           ),

@@ -56,62 +56,13 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: AuthWidget(snapshot: snapshot),
           themeMode: context.watch<ThemeViewModel>().themeMode,
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            accentColor: Colors.blue,
-            appBarTheme: AppBarTheme(
-              brightness: Brightness.dark,
-              elevation: 0,
-              color: Colors.grey[850],
-              iconTheme: IconThemeData(color: Colors.white),
-              textTheme: TextTheme(
-                headline6: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-            ),
-            buttonTheme: ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-          ),
           theme: ThemeData(
             brightness: Brightness.light,
-            appBarTheme: AppBarTheme(
-              brightness: Brightness.light,
-              elevation: 0,
-              color: Colors.grey[50],
-              iconTheme: IconThemeData(color: Colors.black),
-              textTheme: TextTheme(
-                headline6: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-            ),
-            buttonTheme: ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
+            /* light theme settings */
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            /* dark theme settings */
           ),
         ),
       ),

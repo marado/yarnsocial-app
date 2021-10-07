@@ -170,6 +170,11 @@ class Twt {
     return "$mentionsStr ";
   }
 
+  String forkText(String? usernameToExclude) {
+    var hash = this.hash;
+    return hash == null ? "" : "(#" + hash + ") ";
+  }
+
   factory Twt.fromJson(Map<String, dynamic> json) => _$TwtFromJson(json);
   Map<String, dynamic> toJson() => _$TwtToJson(this);
 }

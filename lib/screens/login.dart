@@ -24,7 +24,8 @@ class _LoginState extends State<Login> {
             _podURLController.text,
           );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error logging in: " + e.toString())));
     }
   }
 
@@ -83,7 +84,7 @@ class _LoginState extends State<Login> {
                     return Center(child: CircularProgressIndicator());
                   }
 
-                  return RaisedButton(
+                  return ElevatedButton(
                     onPressed: () {
                       if (!_formKey.currentState!.validate()) return;
 
@@ -97,12 +98,12 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 8),
               Builder(builder: (context) {
-                return FlatButton(
+                return TextButton(
                   onPressed: () async {
                     if (await Navigator.push(context,
                             MaterialPageRoute(builder: (_) => Register())) ??
                         false) {
-                      Scaffold.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           'Successfully registered an account. You can now login',
                         ),
