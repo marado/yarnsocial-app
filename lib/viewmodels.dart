@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,7 +14,8 @@ class AuthViewModel {
   final _user = BehaviorSubject<AppUser?>();
 
   AuthViewModel(this._api) {
-    getAppUser().catchError((_) {
+    getAppUser().catchError((e) {
+      if (e != SocketException) {}
       _api.clearUserToken();
       _user.add(null);
     });
