@@ -48,7 +48,7 @@ android {
     defaultConfig {
         applicationId "social.yarn.goryon"
         minSdkVersion 18
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
