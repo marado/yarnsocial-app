@@ -1,18 +1,29 @@
-# goryon 🐦🐦🐦
-A flutter client for twtxt
+# Goryon 🐦🐦🐦
+
+A [Flutter](https://flutter.dev) client for the [Yarn.social] Pod API.
 
 ## Install it
-- 🤖 [Play Store](https://play.google.com/store/apps/details?id=com.jointwtxt.goryon)
-- 🍏 [App Store](https://apps.apple.com/us/app/id1528871748)
+
+- 🤖 [Play Store](#TBD)
+- 🍏 [App Store](#TBD)
 
 ## Requirements
-- [Install flutter](https://flutter.dev/docs/get-started/install)
-- [Setup your editor (optional)](https://flutter.dev/docs/get-started/editor?tab=androidstudio)
 
-## Running the app
-1. Run your iOS simulator or Android emulator
-2. **flutter pub get**
-3. **flutter run**
+- [Install Flutter](https://flutter.dev/docs/get-started/install)
+- [Setup your Editor (optional)](https://flutter.dev/docs/get-started/editor?tab=androidstudio)
+
+## Buildingg the app
+
+- Run your iOS simulator or Android emulator
+- `flutter pub get`
+- `flutter run`
+
+### Building for Android
+
+- Setup a keystore: `./scripts/generate-keystore.sh`
+- Setup the `key.properties`: `./scripts/set-key-properties.sh`
+
+It is recommended ot use [direnv](https://github.com/direnv/direnv) if you can.
 
 ## Screenshots
 
@@ -21,7 +32,7 @@ A flutter client for twtxt
 ![Drawer](https://user-images.githubusercontent.com/15314237/93292676-4ce49480-f7a3-11ea-8a74-e54ccee3c8cf.png)
 
 
-## Building
-Refer to flutter official docs
-- [iOS](https://flutter.dev/docs/deployment/ios)
-- [Android](https://flutter.dev/docs/deployment/android)
+## License
+
+Goryon is licensed under ther terms of the [MIT License](/LICENSE) and is a
+part of the the [Yarn.social](https://yarn.social) project.
