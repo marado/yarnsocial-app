@@ -205,6 +205,33 @@ class PostRequest {
 }
 
 @JsonSerializable()
+class ConfigResponse {
+  final String name;
+  final String logo;
+  final String description;
+
+  @JsonKey(name: 'max_twt_length')
+  final int maxTwtLength;
+
+  @JsonKey(name: 'open_profiles')
+  final bool openProfiles;
+
+  @JsonKey(name: 'open_registrations')
+  final bool openRegistrations;
+
+  @JsonKey(name: 'whitelisted_domains')
+  final List<String> whitelistedDomains;
+
+  ConfigResponse(this.name, this.logo, this.description, this.maxTwtLength,
+      this.openProfiles, this.openRegistrations, this.whitelistedDomains);
+
+  factory ConfigResponse.fromJson(Map<String, dynamic> json) =>
+      _$ConfigResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ConfigResponseToJson(this);
+}
+
+@JsonSerializable()
 class ProfileResponse {
   final Profile? profile;
   final List<Link>? links;

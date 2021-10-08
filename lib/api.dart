@@ -5,15 +5,17 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models.dart';
 
 class Api {
   final http.Client _httpClient;
   final FlutterSecureStorage _flutterSecureStorage;
+  final SharedPreferences _sharedPreferences;
   final String tokenKey = 'provile-v2';
 
-  Api(this._httpClient, this._flutterSecureStorage);
+  Api(this._httpClient, this._flutterSecureStorage, this._sharedPreferences);
 
   Future<AppUser?> get user async {
     String? json = await _flutterSecureStorage.read(key: tokenKey);
@@ -48,6 +50,11 @@ class Api {
 
     final profileResponse =
         await getProfile(username, token: authResponse.token, podURI: podURI);
+
+    final configResponse = await getConfig(podURI);
+
+    this._sharedPreferences.setString("pod_name", configResponse.name);
+    this._sharedPreferences.setString("pod_url", podURI.toString());
 
     final user = AppUser(
       profile: profileResponse.profile,
@@ -222,6 +229,29 @@ class Api {
     final response = await http.Response.fromStream(streamedResponse);
 
     return jsonDecode(response.body)['Path'];
+  }
+
+  Future<ConfigResponse> getConfig(Uri podURI) async {
+    http.Response response;
+
+    response = await _httpClient.get(
+      podURI.replace(path: "/api/v1/config"),
+      headers: {
+        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw http.ClientException(
+        'Failed fetch profile. Please try again later',
+      );
+    }
+
+    return ConfigResponse.fromJson(
+      jsonDecode(
+        utf8.decode(response.bodyBytes),
+      ),
+    );
   }
 
   Future<ProfileResponse> getProfile(String? name,

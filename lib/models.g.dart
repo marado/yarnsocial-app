@@ -140,6 +140,29 @@ Map<String, dynamic> _$PostRequestToJson(PostRequest instance) =>
       'text': instance.text,
     };
 
+ConfigResponse _$ConfigResponseFromJson(Map<String, dynamic> json) {
+  return ConfigResponse(
+    json["name"] as String,
+    json["logo"] as String,
+    json["description"] as String,
+    json["max_twt_length"] as int,
+    json["open_profiles"] as bool,
+    json["open_registrations"] as bool,
+    json["whitelisted_domains"] as List<String>,
+  );
+}
+
+Map<String, dynamic> _$ConfigResponseToJson(ConfigResponse instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'logo': instance.logo,
+      'description': instance.description,
+      'max_twt_length': instance.maxTwtLength,
+      'open_profiles': instance.openProfiles,
+      'open_registrations': instance.openRegistrations,
+      'whitedlisted_domains': instance.whitelistedDomains,
+    };
+
 ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) {
   return ProfileResponse(
     Profile.fromJson(json['profile'] as Map<String, dynamic>),

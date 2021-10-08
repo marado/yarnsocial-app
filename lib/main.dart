@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
     final api = Api(
       UserAgentClient(http.Client(), this.packageInfo),
       FlutterSecureStorage(),
+      sharedPreferences,
     );
 
     return MultiProvider(
