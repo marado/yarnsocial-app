@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:goryon/screens/report.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future _unFollow(String? nick, BuildContext context) async {
+  Future _unfollow(String? nick, BuildContext context) async {
     try {
       await context.read<AuthViewModel>().unfollow(nick);
       Scaffold.of(context).showSnackBar(
@@ -251,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Widget leading = Icon(Icons.person_remove);
                         Function? onTap = () {
                           setState(() {
-                            _unFollowFuture = _unFollow(
+                            _unFollowFuture = _unfollow(
                               vm.twter!.nick,
                               context,
                             );
