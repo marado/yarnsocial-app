@@ -64,9 +64,13 @@ class Api {
   Future<AppUser?> getAppUser() async {
     var _user = await (user);
 
-    final profileResponse = await getProfile(_user!.profile!.username);
+    if (_user == null) {
+      return null;
+    }
 
-    _user = _user!.copyWith(
+    final profileResponse = await getProfile(_user.profile!.username);
+
+    _user = _user.copyWith(
         profile: profileResponse.profile, twter: profileResponse.twter);
 
     await _flutterSecureStorage.write(key: tokenKey, value: jsonEncode(_user));
