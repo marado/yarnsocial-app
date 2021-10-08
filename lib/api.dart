@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
 
 import 'models.dart';
+import 'errors.dart';
 
 class Api {
   final http.Client _httpClient;
@@ -35,8 +36,8 @@ class Api {
     );
 
     if (response.statusCode == 401) {
-      throw http.ClientException(
-        'Invalid username! Hint: Register an account?',
+      throw UnauthorizedException(
+        'Invalid Username/Password Hint: Register an account?',
       );
     }
 
@@ -60,12 +61,12 @@ class Api {
     return user;
   }
 
-  Future<AppUser> getAppUser() async {
-    var _user = await (user as FutureOr<AppUser>);
+  Future<AppUser?> getAppUser() async {
+    var _user = await (user);
 
-    final profileResponse = await getProfile(_user.profile!.username);
+    final profileResponse = await getProfile(_user!.profile!.username);
 
-    _user = _user.copyWith(
+    _user = _user!.copyWith(
         profile: profileResponse.profile, twter: profileResponse.twter);
 
     await _flutterSecureStorage.write(key: tokenKey, value: jsonEncode(_user));

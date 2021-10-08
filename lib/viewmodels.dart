@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 import 'models.dart';
+import 'errors.dart';
 
 class AuthViewModel {
   final Api _api;
@@ -15,9 +16,12 @@ class AuthViewModel {
 
   AuthViewModel(this._api) {
     getAppUser().catchError((e) {
-      if (e != SocketException) {}
-      _api.clearUserToken();
-      _user.add(null);
+      debugPrint("Error getting user: " + e.toString());
+      debugPrint(e.runtimeType.toString());
+      if (e == UnauthorizedException) {
+        _api.clearUserToken();
+        _user.add(null);
+      }
     });
   }
 
@@ -30,14 +34,14 @@ class AuthViewModel {
   }
 
   Future<void> unfollow(String? nick) async {
-    final user = await (_user.first as FutureOr<AppUser>);
+    final user = await (_user.first as Future<AppUser>);
     _api.unfollow(nick);
     user.profile!.following!.remove(nick);
     _user.add(user);
   }
 
   Future<void> follow(String? nick, String url) async {
-    final user = await (_user.first as FutureOr<AppUser>);
+    final user = await (_user.first as Future<AppUser>);
     _api.follow(nick, url);
     user.profile!.following!.putIfAbsent(nick, () => url);
     _user.add(user);
