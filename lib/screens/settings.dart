@@ -140,7 +140,7 @@ class _SettingsBodyState extends State<SettingsBody> {
   Widget build(BuildContext context) {
     final themeVM = context.watch<ThemeViewModel>();
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
       children: [
         GestureDetector(
           onTap: () {

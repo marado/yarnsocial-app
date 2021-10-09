@@ -121,7 +121,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   List<Widget> buildSlivers() {
     final vm = context.read<ProfileViewModel>();
-
     return [
       SliverAppBar(
         title: Text(vm.name!),
@@ -130,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
