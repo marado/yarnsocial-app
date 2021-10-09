@@ -21,7 +21,7 @@ class _FollowState extends State<Follow> {
   Future? _followFuture;
 
   Widget buildSuccessMessagePage(BuildContext context) {
-    final appStrings = context.read<AppStrings>();
+    final appStrings = context.watch<AppStrings>();
     return WillPopScope(
       onWillPop: () async {
         _nicknameController.clear();

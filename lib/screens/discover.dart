@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../strings.dart';
 import '../widgets/common_widgets.dart';
 import '../viewmodels.dart';
 import 'newtwt.dart';
@@ -21,11 +22,10 @@ class _DiscoverState extends State<Discover> {
 
   @override
   Widget build(BuildContext context) {
+    final appStrings = context.watch<AppStrings>();
     return Scaffold(
       drawer: AppDrawer(activatedRoute: Discover.routePath),
-      appBar: AppBar(
-        title: const Text('Discover'),
-      ),
+      appBar: AppBar(title: Text(appStrings.discover)),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           tooltip: 'New twt',

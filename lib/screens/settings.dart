@@ -9,6 +9,7 @@ import 'package:goryon/widgets/common_widgets.dart';
 import 'package:goryon/widgets/image_picker.dart';
 
 import '../form_validators.dart';
+import '../strings.dart';
 import '../viewmodels.dart';
 
 class Settings extends StatefulWidget {
@@ -33,11 +34,10 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    final appStrings = context.watch<AppStrings>();
     return Scaffold(
       drawer: AppDrawer(activatedRoute: Settings.routePath),
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: Text(appStrings.settings)),
       body: FutureBuilder<User>(
         future: _fetchUserFuture,
         builder: (context, snapshot) {

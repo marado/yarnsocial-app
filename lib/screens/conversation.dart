@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../strings.dart';
 import '../viewmodels.dart';
 import '../widgets/common_widgets.dart';
 import 'newtwt.dart';
@@ -21,12 +22,11 @@ class _ConversationState extends State<Conversation> {
 
   @override
   Widget build(BuildContext context) {
+    final appStrings = context.watch<AppStrings>();
     final vm = context.watch<ConversationViewModel>();
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Conversation'),
-        ),
+        appBar: AppBar(title: Text(appStrings.conversations)),
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
             tooltip: 'Reply',

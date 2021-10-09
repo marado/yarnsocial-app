@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../strings.dart';
 import '../widgets/common_widgets.dart';
 import '../viewmodels.dart';
 import 'newtwt.dart';
@@ -20,11 +21,10 @@ class _TimelineState extends State<Timeline> {
 
   @override
   Widget build(BuildContext context) {
+    final appStrings = context.watch<AppStrings>();
     return Scaffold(
       drawer: AppDrawer(activatedRoute: Timeline.routePath),
-      appBar: AppBar(
-        title: const Text('Timeline'),
-      ),
+      appBar: AppBar(title: Text(appStrings.timeline)),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           tooltip: 'New twt',

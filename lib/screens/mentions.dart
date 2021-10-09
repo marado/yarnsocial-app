@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../strings.dart';
 import '../widgets/common_widgets.dart';
 import '../viewmodels.dart';
 import 'newtwt.dart';
@@ -20,13 +21,10 @@ class _MentionsState extends State<Mentions> {
 
   @override
   Widget build(BuildContext context) {
+    final appStrings = context.read<AppStrings>();
     return Scaffold(
       drawer: AppDrawer(activatedRoute: Mentions.routePath),
-      appBar: AppBar(
-        textTheme: Theme.of(context).textTheme,
-        title: const Text('Mentions'),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      ),
+      appBar: AppBar(title: Text(appStrings.mentions)),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           child: Icon(Icons.add),

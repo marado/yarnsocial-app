@@ -16,6 +16,16 @@ class AppStrings {
   String failLaunch = 'Failed to launch';
   String failLaunchImageToBrowser = 'Failed to launch image in browser';
 
+  String mentions = "Mentions";
+
   String unexpectedError = 'An unexpected error has occurred';
   String tapToRetry = 'Tap to retry';
+
+  String conversations = "Conversations";
+
+  String discover = "Discover";
+
+  String settings = "Settings";
+
+  String timeline = "Timeline";
 }
