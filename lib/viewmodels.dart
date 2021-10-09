@@ -33,16 +33,16 @@ class AuthViewModel {
   }
 
   Future<void> unfollow(String? nick) async {
-    final user = await (_user.first as Future<AppUser>);
+    final user = await (_user.first);
     _api.unfollow(nick);
-    user.profile!.following!.remove(nick);
+    user!.profile!.following!.remove(nick);
     _user.add(user);
   }
 
   Future<void> follow(String? nick, String url) async {
-    final user = await (_user.first as Future<AppUser>);
+    final user = await (_user.first);
     _api.follow(nick, url);
-    user.profile!.following!.putIfAbsent(nick, () => url);
+    user!.profile!.following!.putIfAbsent(nick, () => url);
     _user.add(user);
   }
 
