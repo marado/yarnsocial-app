@@ -21,8 +21,6 @@ class AppStrings {
   String unexpectedError = 'An unexpected error has occurred';
   String tapToRetry = 'Tap to retry';
 
-  String conversations = "Conversations";
-
   String discover = "Discover";
 
   String settings = "Settings";

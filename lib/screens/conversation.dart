@@ -22,11 +22,10 @@ class _ConversationState extends State<Conversation> {
 
   @override
   Widget build(BuildContext context) {
-    final appStrings = context.watch<AppStrings>();
     final vm = context.watch<ConversationViewModel>();
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text(appStrings.conversations)),
+        appBar: AppBar(title: Text("#${vm.conversationRootTwtHash}")),
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
             tooltip: 'Reply',
