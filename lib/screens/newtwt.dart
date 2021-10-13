@@ -33,12 +33,13 @@ class _NewTwtState extends State<NewTwt> {
 
   @override
   Widget build(BuildContext context) {
+    final appStrings = context.watch<AppStrings>();
     return Scaffold(
       floatingActionButton: SavePostButton(
         formKey: _formKey,
         textEditingController: _textController,
       ),
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(appStrings.newpost)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<AppUser>(
