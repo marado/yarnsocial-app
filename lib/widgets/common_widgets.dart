@@ -553,7 +553,7 @@ class _PostListState extends State<PostList> {
                             ),
                           ),
                         SizedBox(width: 8),
-                        if (widget.showForkButton)
+                        if (widget.showForkButton && idx > 0)
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               shape: StadiumBorder(),
