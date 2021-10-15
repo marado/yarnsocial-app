@@ -431,6 +431,7 @@ class _PostListState extends State<PostList> {
       },
       data: twt.cleanMDText,
       extensionSet: md.ExtensionSet.gitHubWeb,
+      softLineBreak: true,
     );
   }
 
