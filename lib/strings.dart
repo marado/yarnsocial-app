@@ -28,4 +28,7 @@ class AppStrings {
   String timeline = "Timeline";
 
   String newpost = "New Post";
+
+  String emptyTimeline =
+      "Your timeline is empty, try checking out Discover to see what's happenning on the %s pod!";
 }
