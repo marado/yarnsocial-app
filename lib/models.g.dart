@@ -95,7 +95,7 @@ Twt _$TwtFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['created'] as String),
     hash: json['hash'] as String?,
-    tags: (json['tags'] as List?)?.map((e) => e as String)?.toList(),
+    tags: (json['tags'] as List?)?.map((e) => e as String).toList(),
     subject: json['subject'] as String?,
   );
 }

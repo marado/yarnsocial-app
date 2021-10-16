@@ -63,7 +63,7 @@ class _ReportState extends State<Report> {
           );
       widget.afterSubmit();
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to submit report'),
         ),
@@ -187,7 +187,7 @@ class _ReportState extends State<Report> {
                 builder: (context, snapshot) {
                   final isLoading =
                       snapshot.connectionState == ConnectionState.waiting;
-                  return RaisedButton(
+                  return ElevatedButton(
                     onPressed: isLoading
                         ? null
                         : () {

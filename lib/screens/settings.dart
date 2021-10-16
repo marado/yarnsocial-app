@@ -123,13 +123,13 @@ class _SettingsBodyState extends State<SettingsBody> {
           _emailController.text,
           _isFollowersPubliclyVisible!,
           _isFollowingPubliclyVisible!);
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Successfully saved user settings'),
       ));
       await context.read<AuthViewModel>().getAppUser();
       CachedNetworkImage.evictFromCache(widget.imageURL!);
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to save user settings'),
       ));
       rethrow;
@@ -239,7 +239,7 @@ class _SettingsBodyState extends State<SettingsBody> {
               return Center(child: CircularProgressIndicator());
             }
 
-            return RaisedButton(
+            return ElevatedButton(
               onPressed: () {
                 setState(() {
                   _saveSettingsFuture = save();

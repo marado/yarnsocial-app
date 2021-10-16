@@ -122,7 +122,7 @@ class _NewTwtFormState extends State<NewTwtForm> {
         text: textEditingController.value.text + '![]($imageURL)',
       );
     } catch (_) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'An error has occurred while uploading an image. Please try again',

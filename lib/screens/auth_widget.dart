@@ -45,8 +45,8 @@ class _AuthWidgetState extends State<AuthWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.snapshot!.connectionState == ConnectionState.active) {
-      return widget.snapshot!.hasData ? Home() : Login();
+    if (widget.snapshot.connectionState == ConnectionState.active) {
+      return widget.snapshot.hasData ? Home() : Login();
     }
 
     return Scaffold(

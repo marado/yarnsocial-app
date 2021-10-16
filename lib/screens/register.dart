@@ -36,7 +36,7 @@ class _RegisterState extends State<Register> {
           );
       Navigator.pop(context, true);
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
       rethrow;
     }
   }
@@ -142,7 +142,7 @@ class _RegisterState extends State<Register> {
                         return Center(child: CircularProgressIndicator());
                       }
 
-                      return RaisedButton(
+                      return ElevatedButton(
                         onPressed: !_communityGuidelineToggle
                             ? null
                             : () {

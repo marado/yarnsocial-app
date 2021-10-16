@@ -118,16 +118,16 @@ class TimelineViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastTimelineResponse.pagerResponse!.currentPage ==
-        _lastTimelineResponse.pagerResponse!.maxPages) {
+    if (_lastTimelineResponse.pagerResponse.currentPage ==
+        _lastTimelineResponse.pagerResponse.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastTimelineResponse.pagerResponse!.currentPage! + 1;
+      final page = _lastTimelineResponse.pagerResponse.currentPage! + 1;
       _lastTimelineResponse = await _api.timeline(page);
-      _twts = [..._twts!, ..._lastTimelineResponse.twts!];
+      _twts = [..._twts!, ..._lastTimelineResponse.twts];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -182,16 +182,16 @@ class MentionsViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastMentionsResponse.pagerResponse!.currentPage ==
-        _lastMentionsResponse.pagerResponse!.maxPages) {
+    if (_lastMentionsResponse.pagerResponse.currentPage ==
+        _lastMentionsResponse.pagerResponse.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastMentionsResponse.pagerResponse!.currentPage! + 1;
+      final page = _lastMentionsResponse.pagerResponse.currentPage! + 1;
       _lastMentionsResponse = await _api.mentions(page);
-      _twts = [..._twts!, ..._lastMentionsResponse.twts!];
+      _twts = [..._twts!, ..._lastMentionsResponse.twts];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -245,16 +245,16 @@ class DiscoverViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastTimelineResponse.pagerResponse!.currentPage ==
-        _lastTimelineResponse.pagerResponse!.maxPages) {
+    if (_lastTimelineResponse.pagerResponse.currentPage ==
+        _lastTimelineResponse.pagerResponse.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastTimelineResponse.pagerResponse!.currentPage! + 1;
+      final page = _lastTimelineResponse.pagerResponse.currentPage! + 1;
       _lastTimelineResponse = await _api.discover(page);
-      _twts = [..._twts!, ..._lastTimelineResponse.twts!];
+      _twts = [..._twts!, ..._lastTimelineResponse.twts];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -329,16 +329,16 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<void> gotoNextPage() async {
-    if (_lastTimelineResponse.pagerResponse!.currentPage ==
-        _lastTimelineResponse.pagerResponse!.maxPages) {
+    if (_lastTimelineResponse.pagerResponse.currentPage ==
+        _lastTimelineResponse.pagerResponse.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastTimelineResponse.pagerResponse!.currentPage! + 1;
+      final page = _lastTimelineResponse.pagerResponse.currentPage! + 1;
       _lastTimelineResponse = await _api.getUserTwts(page, profile!.username);
-      _twts = [..._twts!, ..._lastTimelineResponse.twts!];
+      _twts = [..._twts!, ..._lastTimelineResponse.twts];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;
@@ -363,8 +363,6 @@ class ThemeViewModel extends ChangeNotifier {
   ThemeMode? _themeMode;
 
   ThemeViewModel(this._sharedPreferences) {
-    assert(this._sharedPreferences != null);
-
     _themeMode = ThemeMode.values[
         (_sharedPreferences.getInt(ThemeViewModel.ThemeModeKey) ??
             0)]; // Uses ThemeMode.system by default
@@ -436,17 +434,17 @@ class ConversationViewModel extends ChangeNotifier {
   }
 
   void gotoNextPage() async {
-    if (_lastMentionsResponse.pagerResponse!.currentPage ==
-        _lastMentionsResponse.pagerResponse!.maxPages) {
+    if (_lastMentionsResponse.pagerResponse.currentPage ==
+        _lastMentionsResponse.pagerResponse.maxPages) {
       return;
     }
 
     fetchMoreState = FetchState.Loading;
     try {
-      final page = _lastMentionsResponse.pagerResponse!.currentPage! + 1;
+      final page = _lastMentionsResponse.pagerResponse.currentPage! + 1;
       _lastMentionsResponse =
           await _api.fetchConversation(_sourceTwt.cleanSubject, page);
-      _twts = [..._twts!, ..._lastMentionsResponse.twts!];
+      _twts = [..._twts!, ..._lastMentionsResponse.twts];
       fetchMoreState = FetchState.Done;
     } catch (e) {
       fetchMoreState = FetchState.Error;

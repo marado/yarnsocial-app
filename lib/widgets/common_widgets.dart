@@ -65,8 +65,7 @@ class SizedSpinner extends StatelessWidget {
   final double height;
   final double width;
 
-  const SizedSpinner({Key? key, this.height = 16, this.width = 16})
-      : super(key: key);
+  const SizedSpinner({Key? key, this.height = 16, this.width = 16}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,9 +133,7 @@ class AuthWidgetBuilder extends StatelessWidget {
 }
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer(
-      {Key? key, required this.activatedRoute, this.avatarRadius = 35})
-      : super(key: key);
+  const AppDrawer({Key? key, required this.activatedRoute, this.avatarRadius = 35}) : super(key: key);
 
   final String activatedRoute;
   final double avatarRadius;
@@ -240,7 +237,7 @@ class PostActions extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -292,9 +289,7 @@ class _PostListState extends State<PostList> {
   }
 
   void initiateLoadMoreOnScroll() {
-    if (_scrollController.position.pixels >
-            _scrollController.position.maxScrollExtent * 0.9 &&
-        widget.fetchMoreState == FetchState.Done) {
+    if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent * 0.9 && widget.fetchMoreState == FetchState.Done) {
       widget.gotoNextPage();
     }
   }
@@ -363,8 +358,7 @@ class _PostListState extends State<PostList> {
                     title: title,
                     videoURL: thumbnailURI
                         .replace(
-                          path:
-                              "${thumbnailURI.path}.${Platform.isIOS ? 'mp4' : 'webm'}",
+                          path: "${thumbnailURI.path}.${Platform.isIOS ? 'mp4' : 'webm'}",
                         )
                         .toString(),
                   ),
@@ -378,7 +372,7 @@ class _PostListState extends State<PostList> {
               return;
             }
 
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(appStrings.failLaunchImageToBrowser),
               ),
@@ -423,7 +417,7 @@ class _PostListState extends State<PostList> {
           return;
         }
 
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${appStrings.failLaunch} $link'),
           ),
@@ -475,16 +469,13 @@ class _PostListState extends State<PostList> {
                               Row(
                                 children: [
                                   Text(
-                                    Jiffy(twt.createdTime!.toLocal())
-                                        .format('jm'),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                    Jiffy(twt.createdTime!.toLocal()).format('jm'),
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                   SizedBox(width: 8),
                                   Text(
                                     '(${Jiffy(twt.createdTime).fromNow()})',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ],
                               ),
@@ -578,8 +569,7 @@ class _PostListState extends State<PostList> {
                             ),
                           ),
                         SizedBox(width: 8),
-                        if (widget.showConversationButton &&
-                            twt.subject!.isNotEmpty)
+                        if (widget.showConversationButton && twt.subject!.isNotEmpty)
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               shape: StadiumBorder(),
@@ -694,8 +684,10 @@ class ErrorMessage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           description!,
-          RaisedButton(
-            color: Theme.of(context).colorScheme.error,
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Theme.of(context).colorScheme.error,
+            ),
             onPressed: onButtonPressed,
             child: buttonChild,
           )
@@ -735,9 +727,7 @@ class DropdownFormField<T> extends FormField<T> {
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: state.hasError
-                              ? theme.errorColor
-                              : Color(0xFFBDBDBD),
+                          color: state.hasError ? theme.errorColor : Color(0xFFBDBDBD),
                           width: state.hasError ? 1.0 : 0.0,
                         ),
                       ),

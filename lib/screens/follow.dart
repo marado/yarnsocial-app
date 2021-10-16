@@ -56,7 +56,7 @@ class _FollowState extends State<Follow> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () {
                   _nicknameController.clear();
@@ -85,7 +85,7 @@ class _FollowState extends State<Follow> {
         ),
       );
     } on http.ClientException catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 

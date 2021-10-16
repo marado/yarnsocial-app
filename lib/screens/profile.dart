@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       await context.read<ProfileViewModel>().refreshPost();
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to refresh post'),
         ),
@@ -48,13 +48,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future _follow(String? nick, String url, BuildContext context) async {
     try {
       await context.read<AuthViewModel>().follow(nick, url);
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Successfully followed $nick'),
         ),
       );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to follow $nick'),
         ),
@@ -66,13 +66,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future _unfollow(String? nick, BuildContext context) async {
     try {
       await context.read<AuthViewModel>().unfollow(nick);
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Successfully unfollowed $nick'),
         ),
       );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to unfollow $nick'),
         ),
@@ -85,13 +85,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       await context.read<ProfileViewModel>().mute();
       await context.read<ProfileViewModel>().refreshPost();
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Successfully muted user/feed'),
         ),
       );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to mute user/feed'),
         ),
@@ -104,13 +104,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       await context.read<ProfileViewModel>().unmute();
       await context.read<ProfileViewModel>().refreshPost();
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Successfully unmuted user/feed'),
         ),
       );
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to unmute user/feed'),
         ),
@@ -255,8 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           });
                         };
 
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           leading = SizedSpinner();
                           onTap = null;
                         }
@@ -316,7 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               nick: vm.profile!.username,
                               url: vm.profile!.uri.toString(),
                               afterSubmit: () {
-                                Scaffold.of(context).showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
                                       'Your report has successfully submitted',
@@ -406,8 +405,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text('Failed to load profile: ' + snapshot.error.toString()),
                   SizedBox(height: 32),
-                  RaisedButton(
-                    color: Theme.of(context).colorScheme.error,
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.error,
+                    ),
                     onPressed: () {
                       setState(() {
                         _fetchProfileFuture = _fetchProfile();

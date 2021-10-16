@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<PickedFile?> getImage(
+Future<XFile?> getImage(
   BuildContext context,
   ImagePicker picker,
 ) async {
@@ -36,10 +36,10 @@ Future<PickedFile?> getImage(
         );
       })) {
     case ImageSource.gallery:
-      return picker.getImage(source: ImageSource.gallery);
+      return picker.pickImage(source: ImageSource.gallery);
     case ImageSource.camera:
-      return picker.getImage(source: ImageSource.camera);
+      return picker.pickImage(source: ImageSource.camera);
+    default:
+      return null;
   }
-
-  return null;
 }
