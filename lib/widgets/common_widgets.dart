@@ -52,7 +52,7 @@ class Avatar extends StatelessWidget {
 
     return CachedNetworkImage(
       imageUrl: imageUrl!,
-      httpHeaders: {HttpHeaders.acceptHeader: "image/webp"},
+      httpHeaders: {HttpHeaders.acceptHeader: "image/png"},
       imageBuilder: (context, imageProvider) {
         return CircleAvatar(backgroundImage: imageProvider, radius: radius);
       },
@@ -66,7 +66,8 @@ class SizedSpinner extends StatelessWidget {
   final double height;
   final double width;
 
-  const SizedSpinner({Key? key, this.height = 16, this.width = 16}) : super(key: key);
+  const SizedSpinner({Key? key, this.height = 16, this.width = 16})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +135,9 @@ class AuthWidgetBuilder extends StatelessWidget {
 }
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({Key? key, required this.activatedRoute, this.avatarRadius = 35}) : super(key: key);
+  const AppDrawer(
+      {Key? key, required this.activatedRoute, this.avatarRadius = 35})
+      : super(key: key);
 
   final String activatedRoute;
   final double avatarRadius;
@@ -290,7 +293,9 @@ class _PostListState extends State<PostList> {
   }
 
   void initiateLoadMoreOnScroll() {
-    if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent * 0.9 && widget.fetchMoreState == FetchState.Done) {
+    if (_scrollController.position.pixels >
+            _scrollController.position.maxScrollExtent * 0.9 &&
+        widget.fetchMoreState == FetchState.Done) {
       widget.gotoNextPage();
     }
   }
@@ -343,7 +348,7 @@ class _PostListState extends State<PostList> {
           Uri thumbnailURI = uri;
           bool isVideoThumbnail = false;
 
-          if (path.extension(uri.path) == '.webm') {
+          if (path.extension(uri.path) == '.mp4') {
             isVideoThumbnail = true;
             thumbnailURI = uri.replace(
               path: '${path.withoutExtension(uri.path)}',
@@ -358,9 +363,7 @@ class _PostListState extends State<PostList> {
                   builder: (context) => VideoScreen(
                     title: title,
                     videoURL: thumbnailURI
-                        .replace(
-                          path: "${thumbnailURI.path}.${Platform.isIOS ? 'mp4' : 'webm'}",
-                        )
+                        .replace(path: "${thumbnailURI.path}.mp4")
                         .toString(),
                   ),
                 ),
@@ -383,7 +386,7 @@ class _PostListState extends State<PostList> {
           return GestureDetector(
             onTap: onTap,
             child: CachedNetworkImage(
-              httpHeaders: {HttpHeaders.acceptHeader: "image/webp"},
+              httpHeaders: {HttpHeaders.acceptHeader: "image/png"},
               imageUrl: thumbnailURI.toString(),
               placeholder: (context, url) => CircularProgressIndicator(),
               imageBuilder: (context, imageProvider) {
@@ -507,13 +510,16 @@ class _PostListState extends State<PostList> {
                               Row(
                                 children: [
                                   Text(
-                                    Jiffy(twt.createdTime!.toLocal()).format('jm'),
-                                    style: Theme.of(context).textTheme.bodyText2,
+                                    Jiffy(twt.createdTime!.toLocal())
+                                        .format('jm'),
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
                                   ),
                                   SizedBox(width: 8),
                                   Text(
                                     '(${Jiffy(twt.createdTime).fromNow()})',
-                                    style: Theme.of(context).textTheme.bodyText2,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ],
                               ),
@@ -607,7 +613,8 @@ class _PostListState extends State<PostList> {
                             ),
                           ),
                         SizedBox(width: 8),
-                        if (widget.showConversationButton && twt.subject!.isNotEmpty)
+                        if (widget.showConversationButton &&
+                            twt.subject!.isNotEmpty)
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               shape: StadiumBorder(),
@@ -765,7 +772,9 @@ class DropdownFormField<T> extends FormField<T> {
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: state.hasError ? theme.errorColor : Color(0xFFBDBDBD),
+                          color: state.hasError
+                              ? theme.errorColor
+                              : Color(0xFFBDBDBD),
                           width: state.hasError ? 1.0 : 0.0,
                         ),
                       ),
