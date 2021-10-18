@@ -145,69 +145,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderColor: Theme.of(context).primaryColor,
                     ),
                   ),
-                  if (!vm.isProfileExternal)
-                    Flexible(
-                      flex: 2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: vm.hasFollowing
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        fullscreenDialog: true,
-                                        builder: (context) {
-                                          return UserList(
-                                            usersAndURL: vm.following,
-                                            title: 'Following',
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  }
-                                : null,
-                            child: Column(
-                              children: [
-                                Text(
-                                  vm.followingCount.toString(),
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                                Text('Following')
-                              ],
-                            ),
+                  Flexible(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: vm.hasFollowing
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) {
+                                        return UserList(
+                                          usersAndURL: vm.following,
+                                          title: 'Following',
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
+                              : null,
+                          child: Column(
+                            children: [
+                              Text(
+                                vm.followingCount.toString(),
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              Text('Following')
+                            ],
                           ),
-                          GestureDetector(
-                            onTap: vm.hasFollowers
-                                ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        fullscreenDialog: true,
-                                        builder: (context) {
-                                          return UserList(
-                                            usersAndURL: vm.followers,
-                                            title: 'Followers',
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  }
-                                : null,
-                            child: Column(
-                              children: [
-                                Text(
-                                  vm.followerCount.toString(),
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                                Text('Followers')
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: vm.hasFollowers
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) {
+                                        return UserList(
+                                          usersAndURL: vm.followers,
+                                          title: 'Followers',
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
+                              : null,
+                          child: Column(
+                            children: [
+                              Text(
+                                vm.followerCount.toString(),
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              Text('Followers')
+                            ],
+                          ),
+                        )
+                      ],
                     ),
+                  ),
                 ],
               ),
               SizedBox(height: 16),
@@ -255,7 +254,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           });
                         };
 
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           leading = SizedSpinner();
                           onTap = null;
                         }

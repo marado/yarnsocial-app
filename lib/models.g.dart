@@ -153,6 +153,8 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       json['Type'] as String?,
       json['Username'] as String?,
       json['URL'] == null ? null : Uri.parse(json['URL'] as String),
+      json['NFollowers'] as int?,
+      json['NFollowing'] as int?,
       (json['Followers'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
@@ -169,6 +171,8 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'Type': instance.type,
       'Username': instance.username,
       'URL': instance.uri?.toString(),
+      'NFollowers': instance.nFollowers,
+      'NFollowing': instance.nFollowing,
       'Followers': instance.followers,
       'Following': instance.following,
       'Tagline': instance.tagline,

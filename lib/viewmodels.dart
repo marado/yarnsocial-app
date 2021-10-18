@@ -281,11 +281,11 @@ class ProfileViewModel extends ChangeNotifier {
   bool get hasProfile => _profileResponse?.profile != null;
 
   Map<String?, String>? get following => _profileResponse?.profile?.following;
-  int get followingCount => following?.length ?? 0;
+  int get followingCount => _profileResponse?.profile?.nFollowing ?? 0;
   bool get hasFollowing => followingCount > 0;
 
   Map<String, String>? get followers => _profileResponse?.profile?.followers;
-  int get followerCount => followers?.length ?? 0;
+  int get followerCount => _profileResponse?.profile?.nFollowers ?? 0;
   bool get hasFollowers => followerCount > 0;
 
   bool get isViewingOwnProfile => _loggedInUserProfile!.uri == twter!.uri;

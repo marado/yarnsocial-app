@@ -226,6 +226,10 @@ class Profile {
   final String? username;
   @JsonKey(name: 'URL')
   final Uri? uri;
+  @JsonKey(name: 'NFollowers')
+  final int? nFollowers;
+  @JsonKey(name: 'NFollowing')
+  final int? nFollowing;
   @JsonKey(name: 'Followers')
   final Map<String, String>? followers;
   @JsonKey(name: 'Following')
@@ -243,6 +247,8 @@ class Profile {
     this.type,
     this.username,
     this.uri,
+    this.nFollowers,
+    this.nFollowing,
     this.followers,
     this.following,
     this.tagline,
