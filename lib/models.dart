@@ -229,7 +229,7 @@ class Profile {
   @JsonKey(name: 'Followers')
   final Map<String, String>? followers;
   @JsonKey(name: 'Following')
-  final Map<String?, String>? following;
+  final Map<String, String>? following;
   @JsonKey(name: 'Tagline', defaultValue: '')
   final String tagline;
   @JsonKey(name: 'Muted')
