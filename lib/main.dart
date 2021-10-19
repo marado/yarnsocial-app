@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:goryon/httpclient.dart';
+import 'package:goryon/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        Provider<StorageService>(create: (_) => StorageService(), lazy: false),
         Provider.value(value: api),
         Provider(create: (_) => AppStrings()),
         Provider(create: (_) => AuthViewModel(api)),

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:goryon/form_validators.dart';
+import 'package:goryon/services/storage_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,6 +35,8 @@ class _RegisterState extends State<Register> {
             _passwordTextController.text,
             _podURLController.text,
           );
+      final storage = Provider.of<StorageService>(context);
+      await storage.savePodUrl(_podURLController.text.trim());
       Navigator.pop(context, true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
@@ -89,8 +92,7 @@ class _RegisterState extends State<Register> {
                     decoration: InputDecoration(
                       labelText: 'Email',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      helperText:
-                          'We\'ll never share your email address. Used for password recovery only.',
+                      helperText: 'We\'ll never share your email address. Used for password recovery only.',
                       helperMaxLines: 100,
                     ),
                   ),
@@ -160,8 +162,7 @@ class _RegisterState extends State<Register> {
                   RichText(
                     text: TextSpan(
                       style: DefaultTextStyle.of(context).style,
-                      text:
-                          'By registering an account on twtxt.net you agree to abide by the Community Guidelines set out in the',
+                      text: 'By registering an account on twtxt.net you agree to abide by the Community Guidelines set out in the',
                       children: [
                         TextSpan(
                           style: TextStyle(color: Colors.blue),

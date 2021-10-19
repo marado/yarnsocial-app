@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:goryon/services/storage_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../api.dart';
@@ -72,10 +73,14 @@ class _ReportState extends State<Report> {
     }
   }
 
-  TapGestureRecognizer buildAbusePageTap() {
+  TapGestureRecognizer buildAbusePageTap(BuildContext context) {
     return TapGestureRecognizer()
       ..onTap = () {
-        launch('https://twtxt.net/abuse');
+        final storage = Provider.of<StorageService>(context);
+        final podUrl = storage.getPodUrl();
+        if (podUrl != null) {
+          launch('$podUrl/abuse');
+        }
       };
   }
 
@@ -90,15 +95,14 @@ class _ReportState extends State<Report> {
               RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
-                  text: 'We take all reports very seriously! ' +
-                      ' If you are unsure about our community guidelines, please read the ',
+                  text: 'We take all reports very seriously! ' + ' If you are unsure about our community guidelines, please read the ',
                   children: [
                     TextSpan(
                         style: DefaultTextStyle.of(context).style.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.blue,
                             ),
-                        recognizer: buildAbusePageTap(),
+                        recognizer: buildAbusePageTap(context),
                         text: 'Abuse Policy',
                         children: [TextSpan(text: '.')]),
                   ],
@@ -122,8 +126,7 @@ class _ReportState extends State<Report> {
                 ),
               ),
               Text(
-                'Please provide your name and email address so we may contact you ' +
-                    'for further information (if necessary) and so we can inform you of the outcome.',
+                'Please provide your name and email address so we may contact you ' + 'for further information (if necessary) and so we can inform you of the outcome.',
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -169,7 +172,7 @@ class _ReportState extends State<Report> {
                               fontWeight: FontWeight.bold,
                               color: Colors.blue,
                             ),
-                        recognizer: buildAbusePageTap(),
+                        recognizer: buildAbusePageTap(context),
                         children: [
                           TextSpan(
                             text: ' is in direct violation.',
@@ -185,8 +188,7 @@ class _ReportState extends State<Report> {
               FutureBuilder(
                 future: _submitFuture,
                 builder: (context, snapshot) {
-                  final isLoading =
-                      snapshot.connectionState == ConnectionState.waiting;
+                  final isLoading = snapshot.connectionState == ConnectionState.waiting;
                   return ElevatedButton(
                     onPressed: isLoading
                         ? null

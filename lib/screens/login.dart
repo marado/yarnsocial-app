@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goryon/services/storage_service.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels.dart';
@@ -23,6 +24,8 @@ class _LoginState extends State<Login> {
             _passwordTextController.text,
             _podURLController.text,
           );
+      final storage = Provider.of<StorageService>(context);
+      await storage.savePodUrl(_podURLController.text.trim());
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error logging in: " + e.toString())));
