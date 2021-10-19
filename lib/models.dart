@@ -206,11 +206,9 @@ class PostRequest {
 @JsonSerializable()
 class ProfileResponse {
   final Profile? profile;
-  final List<Link>? links;
-  final List<Alternative>? alternatives;
   final Twter? twter;
 
-  ProfileResponse(this.profile, this.links, this.alternatives, this.twter);
+  ProfileResponse(this.profile, this.twter);
 
   factory ProfileResponse.fromJson(Map<String, dynamic> json) =>
       _$ProfileResponseFromJson(json);
@@ -224,6 +222,8 @@ class Profile {
   final String? type;
   @JsonKey(name: 'Username')
   final String? username;
+  @JsonKey(name: 'Avatar')
+  final String? avatar;
   @JsonKey(name: 'URL')
   final Uri? uri;
   @JsonKey(name: 'NFollowers')
@@ -242,10 +242,13 @@ class Profile {
   final bool? followedBy;
   @JsonKey(name: 'Follows')
   final bool? follows;
+  @JsonKey(name: 'Links')
+  final List<Link>? links;
 
   Profile(
     this.type,
     this.username,
+    this.avatar,
     this.uri,
     this.nFollowers,
     this.nFollowing,
@@ -255,6 +258,7 @@ class Profile {
     this.muted,
     this.followedBy,
     this.follows,
+    this.links,
   );
 
   String get mention {
@@ -272,27 +276,12 @@ class Profile {
 
 @JsonSerializable()
 class Link {
-  @JsonKey(name: 'Href')
-  final String? href;
-  @JsonKey(name: 'Rel')
-  final String? rel;
-
-  Link(this.href, this.rel);
-  factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
-  Map<String, dynamic> toJson() => _$LinkToJson(this);
-}
-
-@JsonSerializable()
-class Alternative {
-  @JsonKey(name: 'Type')
-  final String? type;
   @JsonKey(name: 'Title')
   final String? title;
   @JsonKey(name: 'URL')
   final String? url;
 
-  Alternative(this.type, this.title, this.url);
-  factory Alternative.fromJson(Map<String, dynamic> json) =>
-      _$AlternativeFromJson(json);
-  Map<String, dynamic> toJson() => _$AlternativeToJson(this);
+  Link(this.url, this.title);
+  factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
+  Map<String, dynamic> toJson() => _$LinkToJson(this);
 }

@@ -130,12 +130,6 @@ ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) =>
       json['profile'] == null
           ? null
           : Profile.fromJson(json['profile'] as Map<String, dynamic>),
-      (json['links'] as List<dynamic>?)
-          ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['alternatives'] as List<dynamic>?)
-          ?.map((e) => Alternative.fromJson(e as Map<String, dynamic>))
-          .toList(),
       json['twter'] == null
           ? null
           : Twter.fromJson(json['twter'] as Map<String, dynamic>),
@@ -144,14 +138,13 @@ ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ProfileResponseToJson(ProfileResponse instance) =>
     <String, dynamic>{
       'profile': instance.profile,
-      'links': instance.links,
-      'alternatives': instance.alternatives,
       'twter': instance.twter,
     };
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       json['Type'] as String?,
       json['Username'] as String?,
+      json['Avatar'] as String?,
       json['URL'] == null ? null : Uri.parse(json['URL'] as String),
       json['NFollowers'] as int?,
       json['NFollowing'] as int?,
@@ -165,11 +158,15 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       json['Muted'] as bool?,
       json['FollowedBy'] as bool?,
       json['Follows'] as bool?,
+      (json['Links'] as List<dynamic>?)
+          ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'Type': instance.type,
       'Username': instance.username,
+      'Avatar': instance.avatar,
       'URL': instance.uri?.toString(),
       'NFollowers': instance.nFollowers,
       'NFollowing': instance.nFollowing,
@@ -179,27 +176,15 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'Muted': instance.muted,
       'FollowedBy': instance.followedBy,
       'Follows': instance.follows,
+      'Links': instance.links,
     };
 
 Link _$LinkFromJson(Map<String, dynamic> json) => Link(
-      json['Href'] as String?,
-      json['Rel'] as String?,
+      json['URL'] as String?,
+      json['Title'] as String?,
     );
 
 Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
-      'Href': instance.href,
-      'Rel': instance.rel,
-    };
-
-Alternative _$AlternativeFromJson(Map<String, dynamic> json) => Alternative(
-      json['Type'] as String?,
-      json['Title'] as String?,
-      json['URL'] as String?,
-    );
-
-Map<String, dynamic> _$AlternativeToJson(Alternative instance) =>
-    <String, dynamic>{
-      'Type': instance.type,
       'Title': instance.title,
       'URL': instance.url,
     };

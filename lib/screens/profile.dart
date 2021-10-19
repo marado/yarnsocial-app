@@ -139,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Flexible(
                     flex: 1,
                     child: AvatarWithBorder(
-                      imageUrl: vm.twter!.avatar.toString(),
+                      imageUrl: vm.avatar.toString(),
                       radius: 40,
                       borderThickness: 4,
                       borderColor: Theme.of(context).primaryColor,

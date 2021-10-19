@@ -295,6 +295,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   String? get name => _twter!.nick;
 
+  String? get avatar => _profileResponse?.profile?.avatar;
+
   set profileResponse(ProfileResponse profileResponse) {
     _profileResponse = profileResponse;
     notifyListeners();
