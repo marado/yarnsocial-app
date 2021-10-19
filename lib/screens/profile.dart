@@ -471,7 +471,7 @@ class UserList extends StatelessWidget {
   final Map<String?, String>? usersAndURL;
 
   List<MapEntry<String?, String>> get _usersAndURLEntry =>
-      usersAndURL!.entries.toList();
+      usersAndURL?.entries.toList() ?? [];
 
   @override
   Widget build(BuildContext context) {
@@ -511,7 +511,7 @@ class UserList extends StatelessWidget {
                   },
                 );
               },
-              childCount: usersAndURL!.length,
+              childCount: _usersAndURLEntry.length,
             ),
           )
         ],
