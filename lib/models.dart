@@ -147,14 +147,12 @@ class Twt {
   Set<String?> get mentions =>
       mentionsExp.allMatches(text!).map((e) => e.group(1)).toSet();
 
-  String replyText(String? usernameToExclude) {
+  String replyText(Profile? user) {
     var _subject = subject;
 
-    final _mentions = mentions
-      ..add(twter!.nick)
-      ..remove(usernameToExclude);
-
-    final mentionsStr = _mentions.map((e) => "@$e").join(" ");
+    // TODO: Match the implementation of `yarnd`'s web interface
+    // XXX: Check if we actually follow the Twter
+    final mentionsStr = user!.uri != twter!.uri ? "@${twter!.nick} " : "";
 
     if (_subject != "") {
       _subject = _subject!.replaceAllMapped(mentionAndHashtagExp, (match) {
@@ -163,7 +161,7 @@ class Twt {
         return "$prefix$nick";
       });
 
-      return "$mentionsStr $_subject ";
+      return "$_subject $mentionsStr ";
     }
 
     return "$mentionsStr ";

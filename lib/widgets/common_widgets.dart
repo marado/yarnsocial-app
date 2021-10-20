@@ -575,9 +575,7 @@ class _PostListState extends State<PostList> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => NewTwt(
-                                    initialText: twt.replyText(
-                                      user.profile!.username,
-                                    ),
+                                    initialText: twt.replyText(user.profile),
                                   ),
                                 ),
                               );

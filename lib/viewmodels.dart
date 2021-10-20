@@ -400,7 +400,7 @@ class ConversationViewModel extends ChangeNotifier {
   FetchState get fetchMoreState => _fetchMoreState;
 
   List<Twt>? get twts => _twts;
-  String get replyFabInitialText => "${_sourceTwt.subject} ";
+  String get replyForInitialText => "${_sourceTwt.subject} ";
   String get conversationRootTwtHash => "${_sourceTwt.cleanSubject}";
 
   set mainListState(FetchState fetchState) {

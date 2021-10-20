@@ -34,7 +34,7 @@ class _ConversationState extends State<Conversation> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => NewTwt(
-                        initialText: vm.replyFabInitialText,
+                        initialText: vm.replyForInitialText,
                       ),
                     ),
                   ) ??
