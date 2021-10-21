@@ -76,7 +76,7 @@ class _ReportState extends State<Report> {
   TapGestureRecognizer buildAbusePageTap(BuildContext context) {
     return TapGestureRecognizer()
       ..onTap = () {
-        final storage = Provider.of<StorageService>(context);
+        final storage = Provider.of<StorageService>(context, listen: false);
         final podUrl = storage.getPodUrl();
         if (podUrl != null) {
           launch('$podUrl/abuse');

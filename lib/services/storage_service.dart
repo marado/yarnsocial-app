@@ -12,7 +12,7 @@ class StorageService {
   }
 
   Future<void> savePodUrl(String podUrl) async {
-    sharedPreferences?.setString(Keys.podUrl, podUrl);
+    await sharedPreferences?.setString(Keys.podUrl, podUrl);
   }
 
   String? getPodUrl() {

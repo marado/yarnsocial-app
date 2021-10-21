@@ -18,13 +18,13 @@ class _LoginState extends State<Login> {
   final _usernameTextController = TextEditingController();
 
   Future _handleLogin(BuildContext context) async {
+    final storage = Provider.of<StorageService>(context, listen: false);
     try {
       await context.read<AuthViewModel>().login(
             _usernameTextController.text,
             _passwordTextController.text,
             _podURLController.text,
           );
-      final storage = Provider.of<StorageService>(context);
       await storage.savePodUrl(_podURLController.text.trim());
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -22,6 +22,7 @@ class _RegisterState extends State<Register> {
   final _usernameTextController = TextEditingController();
 
   Future _handleRegister(BuildContext context) async {
+    final storage = Provider.of<StorageService>(context, listen: false);
     try {
       var uri = Uri.parse(_podURLController.text);
 
@@ -35,7 +36,6 @@ class _RegisterState extends State<Register> {
             _passwordTextController.text,
             _podURLController.text,
           );
-      final storage = Provider.of<StorageService>(context);
       await storage.savePodUrl(_podURLController.text.trim());
       Navigator.pop(context, true);
     } catch (e) {

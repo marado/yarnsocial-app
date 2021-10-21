@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:goryon/services/storage_service.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -437,6 +438,8 @@ class _PostListState extends State<PostList> {
   Widget build(BuildContext context) {
     final appStrings = context.read<AppStrings>();
     final user = context.watch<AppUser>();
+    final storage = Provider.of<StorageService>(context, listen: false);
+    final podURL = storage.getPodUrl();
 
     if (widget.twts == null || widget.twts!.length == 0) {
       final emptyTimeline = sprintf(appStrings.emptyTimeline, ["twtxt.net"]);
@@ -484,6 +487,11 @@ class _PostListState extends State<PostList> {
             (_, idx) {
               final twt = widget.twts![idx];
 
+              final imageUrl =
+                  podURL!.contains(twt.twter!.uri.toString().split('/user')[0])
+                      ? twt.twter!.avatar.toString()
+                      : '$podURL/externalAvatar?uri=${twt.twter!.uri}';
+
               return ListTile(
                 contentPadding: EdgeInsets.fromLTRB(16, 16, 8, 6),
                 isThreeLine: true,
@@ -497,7 +505,7 @@ class _PostListState extends State<PostList> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Avatar(imageUrl: twt.twter!.avatar.toString()),
+                          Avatar(imageUrl: imageUrl),
                           SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
