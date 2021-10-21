@@ -320,18 +320,16 @@ class _PostListState extends State<PostList> {
     );
   }
 
-  Twter? getNickFromTwtxtURL(String link) {
+  Twter? getTwterFromTwtxtURL(String link, title) {
     Uri uri;
+
     try {
       uri = Uri.parse(link);
-      if (uri.pathSegments.last != "twtxt.txt") {
-        return null;
-      }
     } catch (e) {
       return null;
     }
 
-    return Twter(nick: uri.fragment, uri: uri.replace(fragment: ""));
+    return Twter(nick: title, uri: uri);
   }
 
   Widget buildMarkdownBody(BuildContext context, Twt twt) {
@@ -411,13 +409,13 @@ class _PostListState extends State<PostList> {
         },
       ),
       onTapLink: (text, link, title) async {
-        final twter = getNickFromTwtxtURL(link!);
-        if (twter != null) {
+        if (twt.mentions.contains(text.replaceFirst("@", ""))) {
+          final twter = getTwterFromTwtxtURL(link!, text.replaceFirst("@", ""));
           pushToProfileScreen(context, twter);
           return;
         }
 
-        if (await canLaunch(link)) {
+        if (await canLaunch(link!)) {
           await launch(link);
           return;
         }
