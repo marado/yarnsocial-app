@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:goryon/services/storage_service.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -434,46 +433,9 @@ class _PostListState extends State<PostList> {
 
   @override
   Widget build(BuildContext context) {
-    final appStrings = context.read<AppStrings>();
     final user = context.watch<AppUser>();
     final storage = Provider.of<StorageService>(context, listen: false);
     final podURL = storage.getPodUrl();
-
-    if (widget.twts == null || widget.twts!.length == 0) {
-      final emptyTimeline = sprintf(appStrings.emptyTimeline, ["twtxt.net"]);
-      return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Column(
-                  children: [
-                    Text(
-                      emptyTimeline,
-                      style: Theme.of(context).textTheme.headline5!.copyWith(
-                            fontWeight: FontWeight.w400,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 32),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        shape: StadiumBorder(),
-                      ),
-                      onPressed: () async {
-                        await Navigator.pushNamed(context, Discover.routePath);
-                      },
-                      child: Text(
-                        "Discover",
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                  ],
-                ))
-          ]);
-    }
 
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
