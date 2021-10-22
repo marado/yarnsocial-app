@@ -39,14 +39,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _storageService = StorageService();
+
     final api = Api(
       UserAgentClient(http.Client(), this.packageInfo),
+      _storageService,
       FlutterSecureStorage(),
     );
 
     return MultiProvider(
       providers: [
-        Provider<StorageService>(create: (_) => StorageService(), lazy: false),
+        Provider<StorageService>(create: (_) => _storageService, lazy: false),
         Provider.value(value: api),
         Provider(create: (_) => AppStrings()),
         Provider(create: (_) => AuthViewModel(api)),

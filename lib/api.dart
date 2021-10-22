@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:goryon/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
@@ -11,17 +12,26 @@ import 'errors.dart';
 
 class Api {
   final http.Client _httpClient;
+  final StorageService _storageService;
   final FlutterSecureStorage _flutterSecureStorage;
   final String tokenKey = 'provile-v2';
 
-  Api(this._httpClient, this._flutterSecureStorage);
+  Api(this._httpClient, this._storageService, this._flutterSecureStorage);
 
   Future<AppUser?> get user async {
     String? json = await _flutterSecureStorage.read(key: tokenKey);
     if (json == null) {
       return null;
     }
-    return AppUser.fromJson(jsonDecode(json));
+
+    final user = AppUser.fromJson(jsonDecode(json));
+
+    if (_storageService.getPodUrl() == null) {
+      await _storageService
+          .savePodUrl(user.profile!.uri!.replace(path: "").toString());
+    }
+
+    return user;
   }
 
   void clearUserToken() {

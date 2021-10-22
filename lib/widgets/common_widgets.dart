@@ -447,15 +447,10 @@ class _PostListState extends State<PostList> {
             (_, idx) {
               final twt = widget.twts![idx];
 
-              final imageUrl;
-              if (podURL != null) {
-                imageUrl =
-                    podURL.contains(twt.twter!.uri.toString().split('/user')[0])
-                        ? twt.twter!.avatar.toString()
-                        : '$podURL/externalAvatar?uri=${twt.twter!.uri}';
-              } else {
-                imageUrl = twt.twter!.avatar.toString();
-              }
+              final imageUrl =
+                  podURL!.contains(twt.twter!.uri.toString().split('/user')[0])
+                      ? twt.twter!.avatar.toString()
+                      : '$podURL/externalAvatar?uri=${twt.twter!.uri}';
 
               return ListTile(
                 contentPadding: EdgeInsets.fromLTRB(16, 16, 8, 6),
