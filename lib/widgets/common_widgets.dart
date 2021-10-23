@@ -22,6 +22,7 @@ import '../screens/follow.dart';
 import '../screens/mentions.dart';
 import '../screens/newtwt.dart';
 import '../screens/settings.dart';
+import '../screens/about.dart';
 import '../screens/timeline.dart';
 import '../screens/videoscreen.dart';
 import '../viewmodels.dart';
@@ -185,6 +186,7 @@ class AppDrawer extends StatelessWidget {
           buildListTile(context, 'Follow', Follow.routePath),
           buildListTile(context, 'Mentions', Mentions.routePath),
           buildListTile(context, 'Settings', Settings.routePath),
+          buildListTile(context, "About", About.routePath),
           ListTile(
             title: Text('Log Out'),
             trailing: Icon(Icons.logout),

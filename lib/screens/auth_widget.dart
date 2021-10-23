@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../api.dart';
 import '../models.dart';
 import '../viewmodels.dart';
+import 'about.dart';
 import 'discover.dart';
 import 'follow.dart';
 import 'login.dart';
@@ -98,6 +99,9 @@ class _HomeState extends State<Home> {
                 break;
               case Settings.routePath:
                 builder = (_) => Settings();
+                break;
+              case About.routePath:
+                builder = (_) => About();
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');

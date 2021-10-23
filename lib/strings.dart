@@ -28,4 +28,6 @@ class AppStrings {
   String timeline = "Timeline";
 
   String newpost = "New Post";
+
+  String about = "About";
 }
