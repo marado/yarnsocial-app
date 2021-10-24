@@ -17,10 +17,14 @@ class AuthViewModel {
     getAppUser().catchError((e) {
       debugPrint("Error getting user: " + e.toString());
       debugPrint(e.runtimeType.toString());
-      if (e == UnauthorizedException) {
-        _api.clearUserToken();
-        _user.add(null);
-      }
+
+      final podURI = _user.value!.profile!.uri!.replace(path: "");
+      _api.ping(podURI).then((bool ok) {
+        if (ok) {
+          _api.clearUserToken();
+          _user.add(null);
+        }
+      });
     });
   }
 

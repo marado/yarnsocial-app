@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:goryon/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
@@ -38,6 +39,15 @@ class Api {
     _flutterSecureStorage.delete(key: tokenKey);
   }
 
+  Future<bool> ping(Uri podURI) async {
+    final response = await _httpClient.post(
+      podURI.replace(path: "/api/v1/ping"),
+      headers: {HttpHeaders.contentTypeHeader: ContentType.json.toString()},
+    );
+
+    return response.statusCode == 200;
+  }
+
   Future<AppUser> login(String username, String password, Uri podURI) async {
     final response = await _httpClient.post(
       podURI.replace(path: "/api/v1/auth"),
@@ -50,6 +60,9 @@ class Api {
         'Invalid Username/Password Hint: Register an account?',
       );
     }
+
+    debugPrint("response: ${response.toString()}");
+    debugPrint("statusCode: ${response.statusCode}");
 
     if (response.statusCode >= 400) {
       throw http.ClientException('Failed to login');
@@ -262,6 +275,9 @@ class Api {
       );
     }
 
+    debugPrint("response: ${response.toString()}");
+    debugPrint("statusCode: ${response.statusCode}");
+
     if (response.statusCode >= 400) {
       throw http.ClientException(
         'Failed fetch profile. Please try again later',
@@ -288,6 +304,9 @@ class Api {
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
     );
+
+    debugPrint("response: ${response.toString()}");
+    debugPrint("statusCode: ${response.statusCode}");
 
     if (response.statusCode >= 400) {
       throw http.ClientException(
