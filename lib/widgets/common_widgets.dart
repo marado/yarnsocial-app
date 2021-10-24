@@ -438,6 +438,7 @@ class _PostListState extends State<PostList> {
     final user = context.watch<AppUser>();
     final storage = Provider.of<StorageService>(context, listen: false);
     final podURL = storage.getPodUrl();
+    final strings = context.watch<AppStrings>();
 
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -602,7 +603,7 @@ class _PostListState extends State<PostList> {
                               );
                             },
                             child: Text(
-                              "Conversation",
+                              strings.conversationButtonTitle,
                               style: Theme.of(context).textTheme.button,
                             ),
                           ),

@@ -30,4 +30,6 @@ class AppStrings {
   String newpost = "New Post";
 
   String about = "About";
+
+  String conversationButtonTitle = "Yarn";
 }
