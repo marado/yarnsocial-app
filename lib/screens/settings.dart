@@ -57,7 +57,6 @@ class _SettingsState extends State<Settings> {
             final user = snapshot.data!;
             return SettingsBody(
               tagline: user.tagline,
-              email: user.email,
               imageURL: context.watch<AppUser>().twter!.avatar.toString(),
               isFollowersPubliclyVisible: user.isFollowersPubliclyVisible,
               isFollowingPubliclyVisible: user.isFollowingPubliclyVisible,
@@ -72,13 +71,12 @@ class _SettingsState extends State<Settings> {
 }
 
 class SettingsBody extends StatefulWidget {
-  final String? tagline, email, imageURL;
+  final String? tagline, imageURL;
   final bool? isFollowersPubliclyVisible, isFollowingPubliclyVisible;
 
   const SettingsBody({
     Key? key,
     required this.tagline,
-    required this.email,
     required this.imageURL,
     required this.isFollowersPubliclyVisible,
     required this.isFollowingPubliclyVisible,
@@ -107,7 +105,6 @@ class _SettingsBodyState extends State<SettingsBody> {
   @override
   void initState() {
     super.initState();
-    _emailController.text = widget.email!;
     _taglineController.text = widget.tagline!;
     _avatarURL = widget.imageURL;
     _isFollowersPubliclyVisible = widget.isFollowersPubliclyVisible;
@@ -173,7 +170,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         ),
         TextFormField(
           validator: FormValidators.requiredField,
-          maxLines: null,
+          maxLines: 1,
           controller: _taglineController,
           decoration: InputDecoration(
             labelText: 'Tagline',

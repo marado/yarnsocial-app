@@ -37,8 +37,6 @@ class User {
   final String? username;
   @JsonKey(name: 'Tagline')
   final String? tagline;
-  @JsonKey(name: 'Email')
-  final String? email;
   @JsonKey(name: 'IsFollowersPubliclyVisible')
   final bool? isFollowersPubliclyVisible;
   @JsonKey(name: 'IsFollowingPubliclyVisible')
@@ -47,7 +45,6 @@ class User {
   User(
     this.username,
     this.tagline,
-    this.email,
     this.isFollowersPubliclyVisible,
     this.isFollowingPubliclyVisible,
   );
