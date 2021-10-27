@@ -11,8 +11,18 @@ class StorageService {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  Future<void> savePodUrl(String podUrl) async {
-    await sharedPreferences?.setString(Keys.podUrl, podUrl);
+  Future<void> savePodUrl(String podURL) async {
+    Uri uri = Uri.parse(podURL);
+
+    if (!uri.hasScheme) {
+      uri = Uri.https(podURL, "");
+    }
+
+    if (uri.isScheme("HTTP")) {
+      uri = uri.replace(scheme: "HTTPS");
+    }
+
+    await sharedPreferences?.setString(Keys.podUrl, uri.toString());
   }
 
   String? getPodUrl() {
