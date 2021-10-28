@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:goryon/data/data.dart';
 import 'package:goryon/httpclient.dart';
 import 'package:goryon/services/storage_service.dart';
+import 'package:goryon/styles/styles.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -61,15 +60,9 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) => MaterialApp(
           debugShowCheckedModeBanner: false,
           home: AuthWidget(snapshot: snapshot),
-          themeMode: context.watch<ThemeViewModel>().themeMode,
-          theme: ThemeData(
-            brightness: Brightness.light,
-            /* light theme settings */
-          ),
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            /* dark theme settings */
-          ),
+          themeMode: context.watch<ThemeViewModel>().themeMode.toThemeMode(),
+          theme: AppThemes.lightTheme(),
+          darkTheme: context.watch<ThemeViewModel>().themeMode.toTheme(),
         ),
       ),
     );

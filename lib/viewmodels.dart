@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:goryon/data/data.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 import 'models.dart';
-import 'errors.dart';
 
 class AuthViewModel {
   final Api _api;
@@ -364,28 +364,28 @@ class ProfileViewModel extends ChangeNotifier {
 }
 
 class ThemeViewModel extends ChangeNotifier {
-  static const String ThemeModeKey = "theme_mode";
+  static const String AppThemeModeKey = "theme_mode";
   final SharedPreferences _sharedPreferences;
-  ThemeMode? _themeMode;
+  AppThemeMode? _themeMode;
 
   ThemeViewModel(this._sharedPreferences) {
-    _themeMode = ThemeMode.values[
-        (_sharedPreferences.getInt(ThemeViewModel.ThemeModeKey) ??
-            0)]; // Uses ThemeMode.system by default
+    _themeMode = AppThemeMode.values[
+        (_sharedPreferences.getInt(ThemeViewModel.AppThemeModeKey) ??
+            0)]; // Uses AppThemeMode.system by default
   }
 
-  ThemeMode get themeMode => _themeMode!;
+  AppThemeMode get themeMode => _themeMode!;
 
-  set themeMode(ThemeMode mode) {
+  set themeMode(AppThemeMode mode) {
     _themeMode = mode;
-    _sharedPreferences.setInt(ThemeViewModel.ThemeModeKey, mode.index);
+    _sharedPreferences.setInt(ThemeViewModel.AppThemeModeKey, mode.index);
     notifyListeners();
   }
 
-  bool get isDarkModeEnabled => _themeMode == ThemeMode.dark;
+  bool get isDarkModeEnabled => _themeMode == AppThemeMode.dark;
 
   void toggleDarkMode(bool shouldToggleDarkMode) {
-    themeMode = shouldToggleDarkMode ? ThemeMode.dark : ThemeMode.light;
+    themeMode = shouldToggleDarkMode ? AppThemeMode.dark : AppThemeMode.light;
   }
 }
 

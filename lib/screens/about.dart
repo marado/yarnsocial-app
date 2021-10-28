@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:goryon/widgets/common_widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../strings.dart';
 

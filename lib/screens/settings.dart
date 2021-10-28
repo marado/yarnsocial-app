@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:goryon/api.dart';
+import 'package:goryon/data/data.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -91,9 +92,10 @@ class _SettingsBodyState extends State<SettingsBody> {
   final _passwordController = TextEditingController();
   final _picker = ImagePicker();
   final _themeModes = [
-    DropdownMenuItem(child: Text('System'), value: ThemeMode.system),
-    DropdownMenuItem(child: Text('Dark'), value: ThemeMode.dark),
-    DropdownMenuItem(child: Text('Light'), value: ThemeMode.light),
+    DropdownMenuItem(child: Text('System'), value: AppThemeMode.system),
+    DropdownMenuItem(child: Text('Dark'), value: AppThemeMode.dark),
+    DropdownMenuItem(child: Text('Light'), value: AppThemeMode.light),
+    DropdownMenuItem(child: Text('Amoled'), value: AppThemeMode.amoled),
   ];
 
   Future? _saveSettingsFuture;
@@ -198,7 +200,7 @@ class _SettingsBodyState extends State<SettingsBody> {
           ),
         ),
         SizedBox(height: 8),
-        DropdownButtonFormField<ThemeMode>(
+        DropdownButtonFormField<AppThemeMode>(
           isExpanded: true,
           items: _themeModes,
           onChanged: (themeMode) {

@@ -163,24 +163,43 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          Consumer<AppUser>(builder: (context, user, _) {
-            return UserAccountsDrawerHeader(
-              margin: const EdgeInsets.all(0),
-              // Avatar border
-              currentAccountPicture: AvatarWithBorder(
-                radius: avatarRadius,
-                imageUrl: user.twter!.avatar.toString(),
-              ),
-              accountName: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(user.profile!.username!),
-                  Text(user.profile!.uri!.authority),
-                ],
-              ),
-              accountEmail: null,
-            );
-          }),
+          GestureDetector(
+            onTap: () async {
+              final user = context.read<AppUser>();
+              final api = context.read<Api>();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ChangeNotifierProvider(
+                      create: (_) =>
+                          ProfileViewModel(api, user.twter, user.profile),
+                      child: ProfileScreen(),
+                    );
+                  },
+                ),
+              );
+            },
+            child: Consumer<AppUser>(builder: (context, user, _) {
+              return UserAccountsDrawerHeader(
+                margin: const EdgeInsets.all(0),
+                // Avatar border
+                currentAccountPicture: AvatarWithBorder(
+                  radius: avatarRadius,
+                  imageUrl: user.twter!.avatar.toString(),
+                ),
+                accountName: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(user.profile!.username!),
+                    Text(user.profile!.uri!.authority),
+                  ],
+                ),
+                accountEmail: null,
+              );
+            }),
+          ),
           buildListTile(context, 'Discover', Discover.routePath),
           buildListTile(context, 'Timeline', Timeline.routePath),
           buildListTile(context, 'Follow', Follow.routePath),
