@@ -172,11 +172,11 @@ class Api {
     return PagedResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
-  Future<void> savePost(String text) async {
+  Future<void> savePost(PostRequest postRequest) async {
     final _user = await (user);
     final response = await _httpClient.post(
       _user!.profile!.uri!.replace(path: "/api/v1/post"),
-      body: jsonEncode({'text': text, 'post_as': "me"}),
+      body: jsonEncode(postRequest.toJson()),
       headers: {
         'Token': _user.token!,
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),

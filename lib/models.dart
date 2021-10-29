@@ -239,6 +239,8 @@ class Profile {
   final bool? follows;
   @JsonKey(name: 'Links')
   final List<Link>? links;
+  @JsonKey(name: 'Feeds')
+  final List<String>? feeds;
 
   Profile(
     this.type,
@@ -254,6 +256,7 @@ class Profile {
     this.followedBy,
     this.follows,
     this.links,
+    this.feeds,
   );
 
   String get mention {

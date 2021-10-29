@@ -159,6 +159,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       (json['Links'] as List<dynamic>?)
           ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
+      (json['Feeds'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
@@ -175,6 +176,7 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'FollowedBy': instance.followedBy,
       'Follows': instance.follows,
       'Links': instance.links,
+      'Feeds': instance.feeds,
     };
 
 Link _$LinkFromJson(Map<String, dynamic> json) => Link(
