@@ -214,7 +214,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         SizedBox(height: 16),
         Text('Privacy Settings', style: Theme.of(context).textTheme.subtitle1),
         SwitchListTile(
-          title: Text('Show my followers publicly'),
+          title: Text('Followers are public'),
           value: _isFollowersPubliclyVisible!,
           onChanged: (value) {
             setState(() {
@@ -223,7 +223,7 @@ class _SettingsBodyState extends State<SettingsBody> {
           },
         ),
         SwitchListTile(
-          title: Text('Show my followings publicly'),
+          title: Text('Followings are public'),
           value: _isFollowingPubliclyVisible!,
           onChanged: (value) {
             setState(() {
