@@ -229,8 +229,8 @@ class _NewTwtFormState extends State<NewTwtForm> {
                   tooltip: 'Underline',
                   icon: Icon(Icons.format_italic),
                   onPressed: () => _surroundTextSelection(
-                    '__',
-                    '__',
+                    '_',
+                    '_',
                   ),
                 ),
                 IconButton(
