@@ -55,13 +55,21 @@ class _NewTwtState extends State<NewTwt> {
   Widget build(BuildContext context) {
     final appStrings = context.watch<AppStrings>();
     return Scaffold(
-      floatingActionButton: SavePostButton(
-        onTap: _submitPost,
-        isLoading: _isLoading,
+      appBar: AppBar(
+        title: Text(appStrings.newpost),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: _submitPost,
+                child: Icon(
+                  Icons.send,
+                  size: 26.0,
+                ),
+              )),
+        ],
       ),
-      appBar: AppBar(title: Text(appStrings.newpost)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Container(
         child: Consumer<AppUser>(
           builder: (contxt, user, _) => Column(
             children: [
@@ -178,11 +186,11 @@ class _NewTwtFormState extends State<NewTwtForm> {
       textEditingController!.value = textEditingController.value.copyWith(
         text: textEditingController.value.text + '![]($imageURL)',
       );
-    } catch (_) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'An error has occurred while uploading an image. Please try again',
+            'An error has occurred while uploading an image: ${e.toString()} - Please try again',
           ),
         ),
       );
