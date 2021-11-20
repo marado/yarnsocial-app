@@ -343,7 +343,18 @@ class ProfileViewModel extends ChangeNotifier {
     fetchMoreState = FetchState.Loading;
     try {
       final page = _lastTimelineResponse.pagerResponse.currentPage! + 1;
-      _lastTimelineResponse = await _api.getUserTwts(page, profile!.username);
+      if (isProfileExternal) {
+        _lastTimelineResponse = await _api.getUserTwts(
+          page,
+          profile!.username,
+          profile!.uri.toString(),
+        );
+      } else {
+        _lastTimelineResponse = await _api.getUserTwts(
+          page,
+          profile!.username,
+        );
+      }
       _twts = [..._twts!, ..._lastTimelineResponse.twts];
       fetchMoreState = FetchState.Done;
     } catch (e) {

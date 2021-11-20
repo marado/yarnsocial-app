@@ -324,6 +324,7 @@ class Api {
   Future<PagedResponse> getUserTwts(int page, String? nick,
       [String url = '']) async {
     final _user = await (user);
+
     final response = await _httpClient.post(
       _user!.profile!.uri!.replace(path: "/api/v1/fetch-twts"),
       body: jsonEncode({
@@ -338,7 +339,8 @@ class Api {
     );
 
     if (response.statusCode >= 400) {
-      throw http.ClientException('Failed to get posts');
+      throw http.ClientException(
+          'Failed to get posts: ${response.reasonPhrase}');
     }
 
     return PagedResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
