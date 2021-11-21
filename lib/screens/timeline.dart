@@ -27,8 +27,8 @@ class _TimelineState extends State<Timeline> {
       appBar: AppBar(title: Text(appStrings.timeline)),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
-          tooltip: 'New twt',
-          child: Icon(Icons.add),
+          tooltip: 'New Twt',
+          child: Icon(Icons.create_rounded),
           onPressed: () async {
             if (await Navigator.push(
                   context,

@@ -59,14 +59,12 @@ class _NewTwtState extends State<NewTwt> {
         title: Text(appStrings.newpost),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: _submitPost,
-                child: Icon(
-                  Icons.send,
-                  size: 26.0,
-                ),
-              )),
+            padding: EdgeInsets.only(right: 20.0),
+            child: SavePostButton(
+              onTap: _submitPost,
+              isLoading: _isLoading,
+            ),
+          ),
         ],
       ),
       body: Container(
@@ -287,19 +285,10 @@ class SavePostButton extends StatelessWidget {
     this.isLoading = false,
   }) : super(key: key);
 
-  Widget _loadingIndicator(BuildContext context) => SizedBox(
-        height: 16,
-        width: 16,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        ),
-      );
-
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      label: isLoading ? _loadingIndicator(context) : const Text("Post"),
+    return IconButton(
+      icon: isLoading ? SizedSpinner() : Icon(Icons.send),
       onPressed: onTap,
     );
   }
