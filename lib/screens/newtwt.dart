@@ -60,9 +60,12 @@ class _NewTwtState extends State<NewTwt> {
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
-            child: SavePostButton(
-              onTap: _submitPost,
-              isLoading: _isLoading,
+            child: IconButton(
+              icon: _isLoading
+                  ? CircularProgressIndicator(
+                      color: Theme.of(context).hintColor)
+                  : Icon(Icons.send),
+              onPressed: _submitPost,
             ),
           ),
         ],
@@ -271,25 +274,6 @@ class _NewTwtFormState extends State<NewTwtForm> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class SavePostButton extends StatelessWidget {
-  final VoidCallback onTap;
-  final bool isLoading;
-
-  const SavePostButton({
-    Key? key,
-    required this.onTap,
-    this.isLoading = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: isLoading ? SizedSpinner() : Icon(Icons.send),
-      onPressed: onTap,
     );
   }
 }
