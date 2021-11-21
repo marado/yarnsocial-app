@@ -4,6 +4,7 @@ import 'package:goryon/services/storage_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:goryon/widgets/twtvideoplayer.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as path;
@@ -364,32 +365,13 @@ class _PostListState extends State<PostList> {
       ),
       imageBuilder: (uri, title, alt) => Builder(
         builder: (context) {
-          Uri thumbnailURI = uri;
-          bool isVideoThumbnail = false;
-
           if (path.extension(uri.path) == '.mp4') {
-            isVideoThumbnail = true;
-            thumbnailURI = uri.replace(
-              path: '${path.withoutExtension(uri.path)}',
+            return TwtAssetVideo(
+              videoURL: uri.toString(),
             );
           }
 
           void onTap() async {
-            if (isVideoThumbnail) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VideoScreen(
-                    title: title,
-                    videoURL: thumbnailURI
-                        .replace(path: "${thumbnailURI.path}.mp4")
-                        .toString(),
-                  ),
-                ),
-              );
-              return;
-            }
-
             if (await canLaunch(uri.toString())) {
               await launch(uri.toString());
               return;
@@ -406,21 +388,13 @@ class _PostListState extends State<PostList> {
             onTap: onTap,
             child: CachedNetworkImage(
               httpHeaders: {HttpHeaders.acceptHeader: "image/png"},
-              imageUrl: thumbnailURI.toString(),
+              imageUrl: uri.toString(),
               placeholder: (context, url) => CircularProgressIndicator(),
               imageBuilder: (context, imageProvider) {
                 return Stack(
                   alignment: Alignment.center,
                   children: [
                     Image(image: imageProvider),
-                    if (isVideoThumbnail)
-                      Center(
-                        child: Icon(
-                          Icons.play_arrow,
-                          color: Colors.white,
-                          size: 100.0,
-                        ),
-                      ),
                   ],
                 );
               },

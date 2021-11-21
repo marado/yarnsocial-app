@@ -27,7 +27,9 @@ class _PlayPauseOverlay extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            controller!.value.isPlaying ? controller!.pause() : controller!.play();
+            controller!.value.isPlaying
+                ? controller!.pause()
+                : controller!.play();
           },
         ),
       ],
@@ -57,7 +59,6 @@ class _TwtAssetVideoState extends State<TwtAssetVideo> {
     _controller!.addListener(() {
       setState(() {});
     });
-    _controller!.setLooping(true);
     _controller!.initialize().then((_) => setState(() {}));
     if (widget.autoPlay) {
       _controller!.play();
