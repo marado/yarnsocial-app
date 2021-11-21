@@ -25,7 +25,6 @@ import '../screens/newtwt.dart';
 import '../screens/settings.dart';
 import '../screens/about.dart';
 import '../screens/timeline.dart';
-import '../screens/videoscreen.dart';
 import '../viewmodels.dart';
 
 class Avatar extends StatelessWidget {
