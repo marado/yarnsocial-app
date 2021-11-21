@@ -18,6 +18,12 @@ class AuthViewModel {
       debugPrint("Error getting user: " + e.toString());
       debugPrint(e.runtimeType.toString());
 
+      if (!_user.hasValue) {
+        _api.clearUserToken();
+        _user.add(null);
+        return;
+      }
+
       final podURI = _user.value!.profile!.uri!.replace(path: "");
       _api.ping(podURI).then((bool ok) {
         if (ok) {
