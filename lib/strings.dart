@@ -27,7 +27,7 @@ class AppStrings {
 
   String timeline = "Timeline";
 
-  String newpost = "New Post";
+  String newpost = "New Twt";
 
   String about = "About";
 
