@@ -144,7 +144,7 @@ class _SettingsBodyState extends State<SettingsBody> {
         GestureDetector(
           onTap: () {
             getImage(context, _picker).then((value) {
-              WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
               if (value == null) return;
               setState(() {
                 _avatarURL = value.path;
