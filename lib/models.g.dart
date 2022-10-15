@@ -61,7 +61,11 @@ Map<String, dynamic> _$PagerResponseToJson(PagerResponse instance) =>
 
 Twter _$TwterFromJson(Map<String, dynamic> json) => Twter(
       nick: json['nick'] as String?,
-      uri: json['url'] == null ? null : Uri.parse(json['url'] as String),
+      // XXX: url field is deprecated in favor of uri
+      // TODO: Remove this compatibility
+      uri: json['url'] == null
+          ? Uri.parse(json["uri"] as String)
+          : Uri.parse(json['url'] as String),
       avatar:
           json['avatar'] == null ? null : Uri.parse(json['avatar'] as String),
       slug: json['slug'] as String?,
@@ -69,7 +73,7 @@ Twter _$TwterFromJson(Map<String, dynamic> json) => Twter(
 
 Map<String, dynamic> _$TwterToJson(Twter instance) => <String, dynamic>{
       'nick': instance.nick,
-      'url': instance.uri?.toString(),
+      'uri': instance.uri?.toString(),
       'avatar': instance.avatar?.toString(),
       'slug': instance.slug,
     };
