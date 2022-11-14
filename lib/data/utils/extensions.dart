@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:goryon/data/data.dart';
-import 'package:goryon/styles/styles.dart';
+import 'package:yarn_social_app/data/data.dart';
+import 'package:yarn_social_app/styles/styles.dart';
 
 extension AppThemeModeExtension on AppThemeMode {
   dynamic toTheme() {

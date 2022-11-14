@@ -1,4 +1,4 @@
-# Goryon 🐦🐦🐦
+# Yarn.social app 🐦
 
 A [Flutter](https://flutter.dev) client for the [Yarn.social] Pod API.
 
@@ -12,7 +12,7 @@ A [Flutter](https://flutter.dev) client for the [Yarn.social] Pod API.
 - [Install Flutter](https://flutter.dev/docs/get-started/install)
 - [Setup your Editor (optional)](https://flutter.dev/docs/get-started/editor?tab=androidstudio)
 
-## Buildingg the app
+## Building the app
 
 - Run your iOS simulator or Android emulator
 - `flutter pub get`
@@ -22,6 +22,7 @@ A [Flutter](https://flutter.dev) client for the [Yarn.social] Pod API.
 
 - Setup a keystore: `./scripts/generate-keystore.sh`
 - Setup the `key.properties`: `./scripts/set-key-properties.sh`
+- If you have changed icons, create new launcher imgs `flutter pub run flutter_launcher_icons:main`
 
 It is recommended ot use [direnv](https://github.com/direnv/direnv) if you can.
 
@@ -34,5 +35,5 @@ It is recommended ot use [direnv](https://github.com/direnv/direnv) if you can.
 
 ## License
 
-Goryon is licensed under ther terms of the [MIT License](/LICENSE) and is a
+Yarn.social app is licensed under ther terms of the [MIT License](/LICENSE) and is a
 part of the the [Yarn.social](https://yarn.social) project.

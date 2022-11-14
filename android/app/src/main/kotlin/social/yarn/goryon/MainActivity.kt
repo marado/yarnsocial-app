@@ -1,4 +1,4 @@
-package social.yarn.goryon
+package social.yarn.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,2 +1,2 @@
 json_key_file("../keys/android/service_account.json")
-package_name("social.yarn.goryon")
+package_name("social.yarn.app")

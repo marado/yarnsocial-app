@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "goryon",
+            "name": "goryon", // TODO: Change this to Yarn.social
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "goryon (profile mode)",
+            "name": "goryon (profile mode)", // TODO: Change this to Yarn.social
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

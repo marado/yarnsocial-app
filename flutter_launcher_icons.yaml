@@ -1,0 +1,22 @@
+# Based on: https://github.com/fluttercommunity/flutter_launcher_icons/blob/master/example/default_example/pubspec.yaml
+# and https://pub.dev/packages/flutter_launcher_icons
+flutter_icons:
+  image_path: "assets/icon/yarn_icon_1024.png"
+
+  # In case you need separate icons for Android and iOS
+  # image_path_android: "assets/images/icon-710x599-android.png"
+  # image_path_ios: "assets/images/icon-1024x1024.png"
+
+  #android: "launcher_icon"
+  android: true # can specify file name here e.g. "ic_launcher"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+  # Adaptive icon is only available for Android 8.0 devices and above
+  adaptive_icon_background: "assets/icon/yarn_back_1024.png"
+  adaptive_icon_foreground: "assets/icon/yarn_front_1024.png"
+
+  #ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  # Based on: https://github.com/fluttercommunity/flutter_launcher_icons/issues/221#issuecomment-1150707790
+  # iOS icon name must be 'AppIcon'
+  ios: "AppIcon" # Crucial step
+  remove_alpha_ios: true

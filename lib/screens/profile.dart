@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:goryon/screens/report.dart';
+import 'package:yarn_social_app/screens/report.dart';
 import 'package:provider/provider.dart';
 
 import '../api.dart';

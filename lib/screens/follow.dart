@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:goryon/api.dart';
-import 'package:goryon/strings.dart';
+import 'package:yarn_social_app/api.dart';
+import 'package:yarn_social_app/strings.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 

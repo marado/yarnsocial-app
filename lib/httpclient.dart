@@ -12,7 +12,7 @@ class UserAgentClient extends http.BaseClient {
 
   Future<http.StreamedResponse> send(http.BaseRequest request) {
     request.headers[HttpHeaders.userAgentHeader] =
-        "Goryon/${_packageInfo.version}";
+        "Yarn.social App/${_packageInfo.version}";
     return _inner.send(request);
   }
 }

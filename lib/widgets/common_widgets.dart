@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:goryon/services/storage_service.dart';
+import 'package:yarn_social_app/services/storage_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:goryon/widgets/twtvideoplayer.dart';
+import 'package:yarn_social_app/widgets/twtvideoplayer.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as path;
@@ -12,9 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:goryon/screens/conversation.dart';
-import 'package:goryon/screens/profile.dart';
-import 'package:goryon/strings.dart';
+import 'package:yarn_social_app/screens/conversation.dart';
+import 'package:yarn_social_app/screens/profile.dart';
+import 'package:yarn_social_app/strings.dart';
 
 import '../api.dart';
 import '../models.dart';

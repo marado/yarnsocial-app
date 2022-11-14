@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="social.yarn.goryon">
+    package="social.yarn.app">
    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="Goryon"
+        android:label="Yarn.social"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

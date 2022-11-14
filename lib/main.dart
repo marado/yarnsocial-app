@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:goryon/data/data.dart';
-import 'package:goryon/httpclient.dart';
-import 'package:goryon/services/storage_service.dart';
-import 'package:goryon/styles/styles.dart';
+import 'package:yarn_social_app/data/data.dart';
+import 'package:yarn_social_app/httpclient.dart';
+import 'package:yarn_social_app/services/storage_service.dart';
+import 'package:yarn_social_app/styles/styles.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';

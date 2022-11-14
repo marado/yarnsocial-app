@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:goryon/api.dart';
-import 'package:goryon/data/data.dart';
+import 'package:yarn_social_app/api.dart';
+import 'package:yarn_social_app/data/data.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'package:goryon/models.dart';
-import 'package:goryon/widgets/common_widgets.dart';
-import 'package:goryon/widgets/image_picker.dart';
+import 'package:yarn_social_app/models.dart';
+import 'package:yarn_social_app/widgets/common_widgets.dart';
+import 'package:yarn_social_app/widgets/image_picker.dart';
 
 import '../form_validators.dart';
 import '../strings.dart';

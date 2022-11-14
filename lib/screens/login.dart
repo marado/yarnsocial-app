@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:goryon/services/storage_service.dart';
+import 'package:yarn_social_app/services/storage_service.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels.dart';
@@ -14,7 +14,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   Future? _loginFuture;
   final _passwordTextController = TextEditingController();
-  final _podURLController = TextEditingController();
+  final _podURLController = TextEditingController(text: 'https://twtxt.net');
   final _usernameTextController = TextEditingController();
 
   Future _handleLogin(BuildContext context) async {
@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
                 validator: requiredFieldValidator,
                 controller: _podURLController,
                 decoration: InputDecoration(
-                  labelText: 'Pod URL',
+                  labelText: 'Pod URL (with https://)',
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
               ),

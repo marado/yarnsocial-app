@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:goryon/form_validators.dart';
-import 'package:goryon/services/storage_service.dart';
+import 'package:yarn_social_app/form_validators.dart';
+import 'package:yarn_social_app/services/storage_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +17,7 @@ class _RegisterState extends State<Register> {
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _passwordTextController = TextEditingController();
-  final _podURLController = TextEditingController();
+  final _podURLController = TextEditingController(text: "https://twtxt.net");
   Future? _registerFuture;
   final _usernameTextController = TextEditingController();
 
@@ -102,7 +102,7 @@ class _RegisterState extends State<Register> {
                     keyboardType: TextInputType.url,
                     controller: _podURLController,
                     decoration: InputDecoration(
-                      labelText: 'Pod URL',
+                      labelText: 'Pod URL (with https://)',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
@@ -162,7 +162,7 @@ class _RegisterState extends State<Register> {
                   RichText(
                     text: TextSpan(
                       style: DefaultTextStyle.of(context).style,
-                      text: 'By registering an account on twtxt.net you agree to abide by the Community Guidelines set out in the',
+                      text: 'By registering an account on a Yarn.social Pod you agree to abide by the Community Guidelines set out in the',
                       children: [
                         TextSpan(
                           style: TextStyle(color: Colors.blue),
