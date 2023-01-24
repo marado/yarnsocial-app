@@ -25,14 +25,12 @@ Map<String, dynamic> _$AppUserToJson(AppUser instance) => <String, dynamic>{
 User _$UserFromJson(Map<String, dynamic> json) => User(
       json['Username'] as String?,
       json['Tagline'] as String?,
-      json['IsFollowersPubliclyVisible'] as bool?,
       json['IsFollowingPubliclyVisible'] as bool?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'Username': instance.username,
       'Tagline': instance.tagline,
-      'IsFollowersPubliclyVisible': instance.isFollowersPubliclyVisible,
       'IsFollowingPubliclyVisible': instance.isFollowingPubliclyVisible,
     };
 

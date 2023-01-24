@@ -59,7 +59,6 @@ class _SettingsState extends State<Settings> {
             return SettingsBody(
               tagline: user.tagline,
               imageURL: context.watch<AppUser>().twter!.avatar.toString(),
-              isFollowersPubliclyVisible: user.isFollowersPubliclyVisible,
               isFollowingPubliclyVisible: user.isFollowingPubliclyVisible,
             );
           }
@@ -79,8 +78,8 @@ class SettingsBody extends StatefulWidget {
     Key? key,
     required this.tagline,
     required this.imageURL,
-    required this.isFollowersPubliclyVisible,
     required this.isFollowingPubliclyVisible,
+    this.isFollowersPubliclyVisible,
   }) : super(key: key);
   @override
   _SettingsBodyState createState() => _SettingsBodyState();
@@ -213,15 +212,6 @@ class _SettingsBodyState extends State<SettingsBody> {
         ),
         SizedBox(height: 16),
         Text('Privacy Settings', style: Theme.of(context).textTheme.subtitle1),
-        SwitchListTile(
-          title: Text('Followers are public'),
-          value: _isFollowersPubliclyVisible!,
-          onChanged: (value) {
-            setState(() {
-              _isFollowersPubliclyVisible = value;
-            });
-          },
-        ),
         SwitchListTile(
           title: Text('Followings are public'),
           value: _isFollowingPubliclyVisible!,

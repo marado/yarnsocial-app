@@ -37,15 +37,12 @@ class User {
   final String? username;
   @JsonKey(name: 'Tagline')
   final String? tagline;
-  @JsonKey(name: 'IsFollowersPubliclyVisible')
-  final bool? isFollowersPubliclyVisible;
   @JsonKey(name: 'IsFollowingPubliclyVisible')
   final bool? isFollowingPubliclyVisible;
 
   User(
     this.username,
     this.tagline,
-    this.isFollowersPubliclyVisible,
     this.isFollowingPubliclyVisible,
   );
 
