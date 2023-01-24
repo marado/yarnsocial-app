@@ -1,0 +1,86 @@
+default_platform(:ios)
+platform :ios do
+
+
+  desc "Push a new beta build to TestFlight"
+  lane :beta_deploy_local do
+    on_success("iOS: Push a new beta build to TestFlight")
+    match(type: "appstore",readonly:true)
+    sync_code_signing(type: "appstore",readonly: true)
+    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+    on_success("iOS: Build uploaded to Testflight")
+    rescue => exception
+           on_error(exception)
+  end
+
+
+
+  desc "Push a new beta build to TestFlight"
+  before_all do |lane, options|
+	create_keychain(
+		name: ENV["MATCH_KEYCHAIN"],
+		password: ENV["MATCH_PASSWORD"],
+		default_keychain: true,
+		unlock: true,
+		timeout: 3600,
+		add_to_search_list: true,
+		verbose: true
+	)
+	rescue => exception
+           on_error(exception)
+  end
+	    lane :test do
+            on_success("iOS: Create build and run tests")
+            clean_build_artifacts
+            match(
+                keychain_name: ENV["MATCH_KEYCHAIN"],
+                keychain_password: ENV["MATCH_PASSWORD"],
+                app_identifier: "bundle",
+                type: "appstore",
+                readonly: true
+            )
+            sync_code_signing(type: "appstore", readonly: true)
+            build_app(workspace: "Runner.xcworkspace", scheme: "Runner",verbose: true)
+            on_success("iOS: All tests passed & build created successfully")
+            rescue => exception
+                   on_error(exception)
+        end
+	end
+
+
+
+	desc "Create build and run tests"
+    lane :test do
+        on_success("iOS: Create build and run tests")
+        clean_build_artifacts
+        match(
+            keychain_name: ENV["MATCH_KEYCHAIN"],
+            keychain_password: ENV["MATCH_PASSWORD"],
+            app_identifier: "bundle",
+            type: "appstore",
+            readonly: true
+        )
+        sync_code_signing(type: "appstore", readonly: true)
+        build_app(workspace: "Runner.xcworkspace", scheme: "Runner",verbose: true)
+        on_success("iOS: All tests passed & build created successfully")
+        rescue => exception
+               on_error(exception)
+    end
+end
+
+def on_error(exception)
+       slack(
+           message: "VISION -- iOS: Lane failed with exception : #{exception}",
+           success: false
+       )
+end
+
+def on_success(message)
+       slack(
+          message: "VISION -- #{message}",
+          success: true
+       )
+end
