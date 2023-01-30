@@ -8,12 +8,12 @@ import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yarn_social_app/widgets/auth_widget.dart';
 
 import 'api.dart';
 import 'screens/auth_widget.dart';
 import 'strings.dart';
 import 'viewmodels.dart';
-import 'widgets/common_widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

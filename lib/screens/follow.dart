@@ -3,9 +3,8 @@ import 'package:yarn_social_app/api.dart';
 import 'package:yarn_social_app/strings.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-
-import '../widgets/common_widgets.dart';
 import '../form_validators.dart';
+import '../widgets/app_drawer.dart';
 
 class Follow extends StatefulWidget {
   static const String routePath = '/follow';
@@ -85,7 +84,8 @@ class _FollowState extends State<Follow> {
         ),
       );
     } on http.ClientException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 

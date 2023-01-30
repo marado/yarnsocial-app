@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../api.dart';
 import '../form_validators.dart';
-import '../widgets/common_widgets.dart';
+import '../widgets/dropdown_form_field.dart';
+import '../widgets/sized_spinner.dart';
 
 class Report extends StatefulWidget {
   static const String routePath = "/report";
@@ -95,7 +96,8 @@ class _ReportState extends State<Report> {
               RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
-                  text: 'We take all reports very seriously! ' + ' If you are unsure about our community guidelines, please read the ',
+                  text: 'We take all reports very seriously! ' +
+                      ' If you are unsure about our community guidelines, please read the ',
                   children: [
                     TextSpan(
                         style: DefaultTextStyle.of(context).style.copyWith(
@@ -126,7 +128,8 @@ class _ReportState extends State<Report> {
                 ),
               ),
               Text(
-                'Please provide your name and email address so we may contact you ' + 'for further information (if necessary) and so we can inform you of the outcome.',
+                'Please provide your name and email address so we may contact you ' +
+                    'for further information (if necessary) and so we can inform you of the outcome.',
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -188,7 +191,8 @@ class _ReportState extends State<Report> {
               FutureBuilder(
                 future: _submitFuture,
                 builder: (context, snapshot) {
-                  final isLoading = snapshot.connectionState == ConnectionState.waiting;
+                  final isLoading =
+                      snapshot.connectionState == ConnectionState.waiting;
                   return ElevatedButton(
                     onPressed: isLoading
                         ? null

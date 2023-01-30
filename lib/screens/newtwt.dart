@@ -8,8 +8,9 @@ import '../api.dart';
 import '../form_validators.dart';
 import '../models.dart';
 import '../strings.dart';
-import '../widgets/common_widgets.dart';
+import '../widgets/avatar.dart';
 import '../widgets/image_picker.dart';
+import '../widgets/sized_spinner.dart';
 
 class NewTwt extends StatefulWidget {
   const NewTwt({Key? key, this.initialText = ''}) : super(key: key);
