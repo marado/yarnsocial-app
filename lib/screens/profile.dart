@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import '../api.dart';
 import '../models.dart';
 import '../viewmodels.dart';
-import '../widgets/common_widgets.dart';
+import '../widgets/avatar.dart';
+import '../widgets/post_list.dart';
+import '../widgets/sized_spinner.dart';
 import 'newtwt.dart';
 
 class ProfileScreen extends StatefulWidget {

@@ -6,12 +6,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:yarn_social_app/models.dart';
-import 'package:yarn_social_app/widgets/common_widgets.dart';
 import 'package:yarn_social_app/widgets/image_picker.dart';
 
 import '../form_validators.dart';
 import '../strings.dart';
 import '../viewmodels.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/avatar.dart';
+import '../widgets/error_widget.dart';
 
 class Settings extends StatefulWidget {
   static const String routePath = "/settings";

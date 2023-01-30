@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:yarn_social_app/widgets/common_widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../strings.dart';
+import '../widgets/app_drawer.dart';
 
 class About extends StatefulWidget {
   static const String routePath = "/about";

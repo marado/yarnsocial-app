@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels.dart';
-import '../widgets/common_widgets.dart';
+import '../widgets/error_widget.dart';
+import '../widgets/post_list.dart';
 import 'newtwt.dart';
 
 class Conversation extends StatefulWidget {

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../strings.dart';
-import '../widgets/common_widgets.dart';
+import '../widgets/app_drawer.dart';
 import '../viewmodels.dart';
+import '../widgets/error_widget.dart';
+import '../widgets/post_list.dart';
 import 'newtwt.dart';
 
 class Timeline extends StatefulWidget {
