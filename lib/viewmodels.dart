@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:yarn_social_app/data/data.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,8 +76,10 @@ class AuthViewModel {
     _user.add(user);
   }
 
-  Future<void> getAppUser() {
-    return _api.getAppUser().then(_user.add);
+  Future<void> getAppUser() async {
+    if (await InternetConnectionChecker().hasConnection) {
+      return _api.getAppUser().then(_user.add);
+    }
   }
 }
 
