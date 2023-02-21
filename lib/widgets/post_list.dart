@@ -200,42 +200,52 @@ class _PostListState extends State<PostList> {
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        pushToProfileScreen(context, twt.twter);
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Avatar(imageUrl: imageUrl),
-                          SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          pushToProfileScreen(context, twt.twter);
+                        },
+                        child: Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                twt.twter!.nick!,
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                              SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    Jiffy(twt.createdTime!.toLocal())
-                                        .format('jm'),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    '(${Jiffy(twt.createdTime).fromNow()})',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ),
-                                ],
+                              Avatar(imageUrl: imageUrl),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      twt.twter!.nick!,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          Jiffy(twt.createdTime!.toLocal())
+                                              .format('jm'),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '(${Jiffy(twt.createdTime).fromNow()})',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     ClipRRect(
