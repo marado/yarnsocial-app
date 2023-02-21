@@ -163,10 +163,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         return UserList(
                                           usersAndURL: vm.following,
                                           title: 'Following',
+                                          refreshListOnReturn: () {
+                                            Navigator.of(context).pop();
+                                          },
                                         );
                                       },
                                     ),
-                                  );
+                                  ).then((value) {
+                                    _fetchProfile();
+                                  });
                                 }
                               : null,
                           child: Column(
@@ -467,10 +472,12 @@ class UserList extends StatelessWidget {
     Key? key,
     required this.usersAndURL,
     required this.title,
+    this.refreshListOnReturn,
   }) : super(key: key);
 
   final String title;
   final Map<String?, String>? usersAndURL;
+  final VoidCallback? refreshListOnReturn;
 
   List<MapEntry<String?, String>> get _usersAndURLEntry =>
       usersAndURL?.entries.toList() ?? [];
@@ -509,7 +516,11 @@ class UserList extends StatelessWidget {
                           );
                         },
                       ),
-                    );
+                    ).then((value) {
+                      if (refreshListOnReturn != null) {
+                        refreshListOnReturn!();
+                      }
+                    });
                   },
                 );
               },
