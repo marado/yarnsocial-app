@@ -101,7 +101,6 @@ class _PostListState extends State<PostList> {
 
   Widget buildMarkdownBody(BuildContext context, Twt twt) {
     final appStrings = context.read<AppStrings>();
-
     return MarkdownBody(
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         blockquoteDecoration: BoxDecoration(
@@ -166,7 +165,10 @@ class _PostListState extends State<PostList> {
           ),
         );
       },
-      data: twt.cleanMDText,
+      data: twt.cleanMDText
+          .replaceAll("<p>", "")
+          .replaceAll("<\/p>", "")
+          .replaceAll("<br \/>", ""),
       extensionSet: md.ExtensionSet.gitHubWeb,
       softLineBreak: true,
     );
@@ -205,46 +207,44 @@ class _PostListState extends State<PostList> {
                         onTap: () {
                           pushToProfileScreen(context, twt.twter);
                         },
-                        child: Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Avatar(imageUrl: imageUrl),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      twt.twter!.nick!,
-                                      style:
-                                          Theme.of(context).textTheme.headline6,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          Jiffy(twt.createdTime!.toLocal())
-                                              .format('jm'),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          '(${Jiffy(twt.createdTime).fromNow()})',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Avatar(imageUrl: imageUrl),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    twt.twter!.nick!,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        Jiffy(twt.createdTime!.toLocal())
+                                            .format('jm'),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '(${Jiffy(twt.createdTime).fromNow()})',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -281,7 +281,9 @@ class _PostListState extends State<PostList> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
-                      child: buildMarkdownBody(context, twt),
+                      child:
+                          // Text(md.markdownToHtml(twt.cleanMDText)),
+                          buildMarkdownBody(context, twt),
                     ),
                     Row(
                       children: [

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:yarn_social_app/services/network_service.dart';
 import 'package:yarn_social_app/services/storage_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -120,15 +121,9 @@ class Api {
 
   Future<PagedResponse> timeline(int page) async {
     final _user = await (user);
-    final response = await _httpClient.post(
-      _user!.profile!.uri!.replace(path: "/api/v1/timeline"),
-      body: jsonEncode({'page': page}),
-      headers: {
-        'Token': _user.token!,
-        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
-      },
-    );
-
+    final response = await NetworkManager.post(
+        url: _user!.profile!.uri!.replace(path: "/api/v1/timeline"),
+        body: {'page': page});
     if (response.statusCode >= 400) {
       throw http.ClientException('Failed to get posts');
     }

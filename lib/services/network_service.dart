@@ -1,19 +1,36 @@
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:yarn_social_app/services/storage_service.dart';
+
+import '../models.dart';
 
 class NetworkManager {
+  static Future<AppUser?> get user async {
+    String? json = await FlutterSecureStorage().read(key: 'provile-v2');
+    if (json == null) {
+      return null;
+    }
+    final user = AppUser.fromJson(jsonDecode(json));
+    if (StorageService().getPodUrl() == null) {
+      await StorageService()
+          .savePodUrl(user.profile!.uri!.replace(path: "").toString());
+    }
+    return user;
+  }
+
   static Future<http.Response> get({required String url}) async {
     try {
       //Get token
-      final String? tokenTemp = "";
-      String token = "Bearer $tokenTemp";
+      final _user = await (user);
+      String token = "${_user?.token!}";
       //Headers
       Map<String, String> headers = {};
       headers['Accept'] = "application/json";
       headers['Content-Type'] = "application/json";
       headers['Connection'] = "keep-alive";
-      headers['authorization'] = token;
+      headers['Token'] = token;
       http.Response response = await http.get(
         Uri.parse(url),
         headers: headers,
@@ -33,20 +50,20 @@ class NetworkManager {
   }
 
   static Future<http.Response> post(
-      {required String url, required Map<String, dynamic> body}) async {
+      {required Uri url, required Map<String, dynamic> body}) async {
     try {
       //Get token
-      final String? tokenTemp = "";
-      String token = "Bearer $tokenTemp";
+      final _user = await (user);
+      String token = "${_user?.token!}";
       //Headers
       Map<String, String> headers = {};
       headers['Accept'] = "application/json";
       headers['Content-Type'] = "application/json";
       headers['Connection'] = "keep-alive";
-      headers['authorization'] = token;
+      headers['Token'] = token;
 
       http.Response response = await http.post(
-        Uri.parse(url),
+        url,
         headers: headers,
         body: json.encode(body),
       );
