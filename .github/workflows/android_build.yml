@@ -20,3 +20,7 @@ jobs:
       - run: "${GITHUB_WORKSPACE}/scripts/generate-keystore.sh GithubAction"
       - run: flutter build apk
       - run: flutter build appbundle
+      - uses: actions/upload-artifact@v1
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
