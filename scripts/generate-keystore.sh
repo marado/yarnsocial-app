@@ -12,7 +12,7 @@ if ! [ -f ./android/app/upload-keystore.jks ]; then
   echo
 
   ANDROID_KEY_STORE_PWD="$(random_string 12)"
-  ANDROID_KEY_PWD="$(random_string 12)"
+  ANDROID_KEY_PWD="$ANDROID_KEY_STORE_PWD"
 
   echo "Generating keystore... "
   echo
