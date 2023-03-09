@@ -2,7 +2,7 @@
 
 random_string() {
   n="${1:-32}"
-  tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w "$n" | head -n 1
+  dd bs=512 if=/dev/urandom count=1 2>/dev/null | tr -dc 'a-zA-Z0-9' | fold -w "$n" | head -n 1
 }
 
 if ! [ -f ./android/app/upload-keystore.jks ]; then
@@ -17,9 +17,16 @@ if ! [ -f ./android/app/upload-keystore.jks ]; then
   echo "Generating keystore... "
   echo
 
-  keytool -v -alias upload -genkey -keyalg RSA -keysize 2048 -validity 10000 \
-    -keypass "$ANDROID_KEY_PWD" -storepass "$ANDROID_KEY_STORE_PWD" \
-    -keystore ./android/app/upload-keystore.jks
+  if [ -n "$1" ]; then
+    keytool -v -alias upload -genkey -keyalg RSA -keysize 2048 -validity 10000 \
+      -keypass "$ANDROID_KEY_PWD" -storepass "$ANDROID_KEY_STORE_PWD" \
+      -keystore ./android/app/upload-keystore.jks -dname "CN=$1";
+  else
+    keytool -v -alias upload -genkey -keyalg RSA -keysize 2048 -validity 10000 \
+      -keypass "$ANDROID_KEY_PWD" -storepass "$ANDROID_KEY_STORE_PWD" \
+      -keystore ./android/app/upload-keystore.jks;
+  fi
+
 
   echo "Generating .envrc ..."
   echo
