@@ -102,7 +102,6 @@ class _PostListState extends State<PostList> {
 
   Widget buildMarkdownBody(BuildContext context, Twt twt) {
     final appStrings = context.read<AppStrings>();
-    print(twt.cleanMDText);
     return MarkdownBody(
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         blockquoteDecoration: BoxDecoration(
