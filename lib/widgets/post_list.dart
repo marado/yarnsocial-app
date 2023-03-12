@@ -163,7 +163,10 @@ class _PostListState extends State<PostList> {
           );
         }
       },
-      data: twt.cleanMDText,
+      data: twt.cleanMDText
+          .replaceAll("<p>", "")
+          .replaceAll("<\/p>", "")
+          .replaceAll("<br \/>", ""),
       extensionSet: md.ExtensionSet.gitHubWeb,
       softLineBreak: true,
     );
