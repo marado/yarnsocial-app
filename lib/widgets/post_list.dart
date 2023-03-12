@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
@@ -101,6 +102,7 @@ class _PostListState extends State<PostList> {
 
   Widget buildMarkdownBody(BuildContext context, Twt twt) {
     final appStrings = context.read<AppStrings>();
+    print(twt.cleanMDText);
     return MarkdownBody(
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         blockquoteDecoration: BoxDecoration(
@@ -279,9 +281,15 @@ class _PostListState extends State<PostList> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
-                      child:
-                          // Text(md.markdownToHtml(twt.cleanMDText)),
-                          buildMarkdownBody(context, twt),
+                      child: ((twt.cleanMDText.contains("<p>")) ||
+                              (twt.cleanMDText.contains("<span>")))
+                          ? Html(
+                              data: twt.cleanMDText,
+                              onLinkTap: (link, context, element, ds) async {
+                                await launchUrl(Uri.parse(link!));
+                              },
+                            )
+                          : buildMarkdownBody(context, twt),
                     ),
                     Row(
                       children: [

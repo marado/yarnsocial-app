@@ -37,6 +37,7 @@ dependencies:
   jiffy: ^5.0.0
   shared_preferences: ^2.0.17
   package_info: ^2.0.2
+  flutter_html: ^2.2.1
 
   flutter:
     sdk: flutter
