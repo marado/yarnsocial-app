@@ -153,22 +153,17 @@ class _PostListState extends State<PostList> {
           pushToProfileScreen(context, twter);
           return;
         }
-
-        if (await canLaunch(link!)) {
-          await launch(link);
-          return;
+        try {
+          await launchUrl(Uri.parse(link!));
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${appStrings.failLaunch} $link'),
+            ),
+          );
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${appStrings.failLaunch} $link'),
-          ),
-        );
       },
-      data: twt.cleanMDText
-          .replaceAll("<p>", "")
-          .replaceAll("<\/p>", "")
-          .replaceAll("<br \/>", ""),
+      data: twt.cleanMDText,
       extensionSet: md.ExtensionSet.gitHubWeb,
       softLineBreak: true,
     );
